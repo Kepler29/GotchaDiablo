@@ -1,0 +1,9 @@
+.idea
+
+/api/.idea
+/api/node_modules
+/api/.env
+
+
+/app/.idea
+/app/node_modules
