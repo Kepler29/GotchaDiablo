@@ -1,0 +1,41 @@
+<footer class="text-muted text-center text-small">
+  <div class="container">
+    <!-- social media links -->
+    <div class="social">
+      <a class="h-facebook" href="https://www.facebook.com/gotchadiablo" target="_blank">
+        <i class="pi pi-facebook"></i>
+      </a>
+      <a class="h-twitter" href="#" target="_blank">
+        <i class="pi pi-twitter"></i>
+      </a>
+      <a class="h-google" href="https://www.youtube.com/channel/UCE5Ncf-6Igg77SGjgSCqZ5w" target="_blank">
+        <i class="pi pi-youtube"></i>
+      </a>
+    </div>
+    <div class="social">
+      <a class="h-google d-md-none cursor" (click)="logout()" *ngIf="user">
+        <i class="pi pi-sign-out"></i>
+      </a>
+      <a class="h-google d-md-none" target="_blank" [href]="API_ADMIN_URL" *ngIf="user && user.role == 'ADMIN_ROLE'">
+        <i class="pi pi-user"></i>
+      </a>
+      <a class="h-google d-md-none" routerLink="/user/profile" *ngIf="user && user.role == 'USER_ROLE'">
+        <i class="pi pi-user"></i>
+      </a>
+      <a class="h-google d-md-none" routerLink="/sign/login" *ngIf="!user">
+        <i class="pi pi-sign-in"></i>
+      </a>
+      <a class="h-google d-md-none" routerLink="/sign/registro" *ngIf="!user">
+        <i class="pi pi-user"></i>
+      </a>
+    </div>
+    <!-- copy right -->
+    <p class="mb-1">&copy; {{ date | date: 'yyyy' }} Gotcha Diablo Todos los derechos reservados.</p>
+    <ul class="list-inline">
+      <li class="list-inline-item"><a routerLink="politicas-privacidad">Privacidad</a></li>
+      <li class="list-inline-item"><a routerLink="politicas-privacidad">Terminos y Condiciones</a></li>
+    </ul>
+  </div>
+</footer>
+
+

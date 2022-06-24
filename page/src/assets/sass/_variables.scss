@@ -1,0 +1,36 @@
+//Fonts
+@font-face {
+  font-family: 'Font-Primary';
+  src: url('../fonts/GODOFWAR.ttf') format('truetype')
+}
+
+// Colors
+$blue: #3490dc;
+$indigo: #6574cd;
+$purple: #9561e2;
+$pink: #f66d9b;
+$red: #e3342f;
+$orange: #f6993f;
+$yellow: #ffed4a;
+$gray: #585858;
+$green: #38c172;
+$teal: #4dc0b5;
+$cyan: #6cb2eb;
+$dark: #252c37;
+
+$primary-color: #384859;
+$primary-dark-color: #2d3a47;
+$primary-color-active: #536a7d;
+$primary-color-hover: #4dccff;
+$primary-color-link-active: #ffffff;
+$primary-color-link: #8e97a0;
+
+$background-login: #4b4b4b;
+
+
+// Resolutions
+$sm: 36rem;
+$md: 48rem;
+$lg: 62rem;
+$xl: 75rem;
+$xxl: 87.5rem;

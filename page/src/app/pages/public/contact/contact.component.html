@@ -1,0 +1,68 @@
+<div class="container-lg py-2">
+  <!--  <app-breadcrumb-public [single]="true" titlePage="Contacto"></app-breadcrumb-public>-->
+  <p-toast></p-toast>
+  <h1 class="text-center my-4">Contacto</h1>
+  <form (ngSubmit)="submit(form)"  #form="ngForm">
+    <div class="row py-3">
+      <div class="col-12">
+        <div class="form-floating">
+          <input type="text" name="name" id="floatingNombre" placeholder="Nombre" class="form-control" ngModel required>
+          <label for="floatingNombre">
+            <span>Nombre</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="row py-3">
+      <div class="col-12 col-md-6">
+        <div class="form-floating">
+          <input type="email" name="email" id="floatingEmail" placeholder="Correo" class="form-control" ngModel required>
+          <label for="floatingEmail">
+            <span>Correo</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="form-floating">
+          <input type="number" min="1111111111" max="9999999999" name="telephone" id="floatingTelefono" placeholder="Telefono" class="form-control" ngModel required>
+          <label for="floatingTelefono">
+            <span>Telefono</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="row py-3">
+      <div class="col-12">
+        <div class="form-floating">
+          <textarea name="message" id="floatingMessage" placeholder="Mensaje" class="form-control" rows="5" ngModel required></textarea>
+          <label for="floatingMessage">
+            <span>Mensaje</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-5">
+      <div class="col-12">
+        <button type="submit"
+                title="Enviar"
+                class="btn btn-primary cursor-pointer float-end"
+                [disabled]="isLoading">
+          <span class="me-2">Enviar</span>
+          <ng-container *ngIf="!isLoading">
+            <i class="pi pi-telegram"></i>
+          </ng-container>
+          <ng-container *ngIf="isLoading">
+            <i class="pi pi-spin pi-spinner"></i>
+          </ng-container>
+        </button>
+      </div>
+    </div>
+    <div class="row my-3">
+      <div class="col-12">
+        <p-captcha class="float-end" siteKey="6Le4AeUZAAAAAJLzC-rf2Xn3AO2sLt8bcGuW5CqT" (onResponse)="showResponse($event)"></p-captcha>
+      </div>
+    </div>
+  </form>
+</div>
+
+
