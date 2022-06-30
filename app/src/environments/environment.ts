@@ -8,6 +8,8 @@ export const environment = {
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: false,
   apiUrl: 'http://localhost:8080/api',
+  adminUrl: 'http://localhost:4200/',
+  pageUrl: 'http://localhost:4200/',
   appThemeName: 'Metronic',
   appPurchaseUrl: 'https://1.envato.market/EA4JP',
   appHTMLIntegration: 'https://preview.keenthemes.com/metronic8/demo1/documentation/base/helpers/flex-layouts.html',

@@ -7,6 +7,8 @@ const { existEmail, existUserForId, existEmailUpdate } = require("../helpers/db-
 const router = Router();
 
 router.get('/', [
+    validateJWT,
+    validateFields
 ] , userGet);
 
 router.post('/', [

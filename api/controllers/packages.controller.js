@@ -5,16 +5,14 @@ const { fileUpload: fileUploadHelper } = require("../helpers");
 
 const packagesGetPublic = async (req, res = response) => {
 
-    const [ totalPackages, packagesHost, packagesProgramming] = await Promise.all([
+    const [ totalPackages, packages] = await Promise.all([
         Package.countDocuments({delete:false, active:true}),
-        Package.find({delete:false, active:true, type:'host'}),
-        Package.find({delete:false, active:true, type:'programming'})
+        Package.find({delete:false, active:true})
     ]);
 
     res.json({
         totalPackages,
-        packagesHost,
-        packagesProgramming,
+        packages,
     });
 };
 
@@ -47,14 +45,14 @@ const packagePost = async (req = request, res = response) => {
     const existPackage = await Package.findOne({slug});
     if (existPackage){
         return res.status(400).json({
-            msg: `El slug ${slug} no se puede repetir cambiar el nombre de la categoria`
+            msg: `El slug ${slug} no se puede repetir cambiar el nombre del paquete`
         })
     }
     let image;
     if(req.files){
         image = await fileUploadHelper(req.files, undefined, 'packages');
     }
-    const package = new Package({name, slug, price, description, intro, type, image});
+    const package = new Package({name, slug, price, description, intro, image});
 
 
 

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Package } from "../../../interfaces/package";
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { Image } from "../../../interfaces/image";
+import { PackagesService } from "../../../services/public/packages.service";
 
 @Component({
   selector: 'app-main',
@@ -8,28 +11,29 @@ import { Package } from "../../../interfaces/package";
 })
 export class MainComponent implements OnInit {
 
-  images:any[]=[];
+  images:Image[]=[];
   packages:Package[]=[];
 
-  responsiveOptions:any[] = [
-    {
-      breakpoint: '1024px',
-      numVisible: 5
-    },
-    {
-      breakpoint: '768px',
-      numVisible: 3
-    },
-    {
-      breakpoint: '560px',
-      numVisible: 1
-    }
-  ];
 
-  constructor() { }
+  constructor(private serivcePackages: PackagesService) { }
 
   ngOnInit() {
+    this.getPackages();
+  }
 
+  getPackages(){
+    this.serivcePackages.getPackages().subscribe(response => {
+      console.log(response);
+      this.packages = response.packages;
+    }, error => {
+      console.log(error);
+      Swal.fire({
+        icon: 'error',
+        title: '¡Error!',
+        text: error.error.msg,
+        timer: 2000
+      });
+    });
   }
 
 }

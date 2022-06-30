@@ -1,14 +1,11 @@
 const { Schema, model } = require('mongoose');
 
-const CompanySchema =  Schema({
+const ImageSchema =  Schema({
     name: {
         type: String,
-        required: [true, 'El nombre es obligatorio']
     },
     slug: {
         type: String,
-        unique: true,
-        required: [true, 'El slug es obligatorio']
     },
     image: {
         type: String,
@@ -23,9 +20,9 @@ const CompanySchema =  Schema({
     }
 });
 
-CompanySchema.methods.toJSON = function () {
+ImageSchema.methods.toJSON = function () {
     const { __v, ...model } = this.toObject();
     return model;
 }
 
-module.exports = model('Company',  CompanySchema);
+module.exports = model('Image',  ImageSchema);

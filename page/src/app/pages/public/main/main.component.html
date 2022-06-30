@@ -25,25 +25,23 @@
   </button>
 </div>
 <div class="container my-5" *ngIf="packages.length != 0">
-  <h1 class="text-center my-4">Paquetes</h1>
+  <h1 class="text-center my-4 title-packages">Paquetes</h1>
   <div class="row d-flex justify-content-center">
     <div class="col-12 col-md-6 col-lg-4 mt-3 mt-lg-0" *ngFor="let package of packages">
       <div class="card-package">
-        <div class="image-card">
-          <img [src]="package._id | image: 'packages'" class=" aspect-radio-main" alt="imagen" *ngIf="package.image" onerror="this.onerror=null;this.src='assets/images/missing.png'">
-          <img src="assets/images/missing.png" *ngIf="!package.image" class="aspect-radio-main">
+        <div class="header-card">
+          <h3>{{ package.name }}</h3>
         </div>
         <div class="description-card">
-          <h3 class="card-title"><strong>{{ package.name }}</strong></h3>
-          <h5 class="card-title"><strong>Balas: </strong>{{ package.bullets }}</h5>
-          <h5 class="card-title"><strong>Pecio: </strong>{{ package.price | currency: 'MXN': 'symbol-narrow' }}</h5>
-          <!--          <p class="card-text" [innerHTML]="package.description| truncate:[150, '...']"></p>-->
+          <div class="row mx-3">
+            <h1 class="card-price">{{ package.price | currency: 'MXN': 'symbol-narrow' }}</h1>
+          </div>
+          <p class="card-text-description" [innerHTML]="package.description"></p>
+          <p class="card-text-intro" [innerHTML]="package.intro"></p>
         </div>
         <div class="row btn-card">
           <div class="col-12">
-            <a [routerLink]="['/paquetes', package.slug]" class="float-end btn btn-primary">
-              Ver más
-            </a>
+            <button pButton pRipple type="button" [routerLink]="['/paquetes', package.slug]" icon="pi pi-eye" label="Ver más" class="p-button-outlined p-button-rounded p-button-danger float-end btn-more"></button>
           </div>
         </div>
       </div>

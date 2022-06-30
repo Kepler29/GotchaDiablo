@@ -1,5 +1,3 @@
-import { Company } from "./company";
-
 export interface User {
     uid: string;
     name: string;
@@ -9,5 +7,4 @@ export interface User {
     role: string;
     avatar: string;
     active: boolean;
-    company: Company
 }

@@ -1,11 +1,11 @@
-const Company = require('./company.model');
+const Image = require('./image.model');
 const Package = require('./package.model');
 const ResetPassword = require('./resetPassword.model');
 const User = require('./user.model');
 const Server = require('./server');
 
 module.exports = {
-    Company,
+    Image,
     Package,
     ResetPassword,
     User,

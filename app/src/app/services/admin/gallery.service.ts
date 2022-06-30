@@ -6,9 +6,9 @@ import {AuthService} from "../../modules/auth";
 @Injectable({
   providedIn: 'root'
 })
-export class CompaniesService {
+export class GalleryService {
 
-  url = environment.apiUrl + '/companies';
+  url = environment.apiUrl + '/gallery';
   auth:any;
   headers:any;
 
@@ -20,29 +20,27 @@ export class CompaniesService {
     });
   }
 
-
-  getCompanies(){
+  getImages(){
     return this.http.get<any>(this.url, {headers: this.headers});
   }
 
-  showCompany(id: string){
+  getImage(id: string){
     return this.http.get<any>(`${this.url}/${id}`, {headers: this.headers});
   }
 
-
-  activeCompany(params: any){
+  activeImage(params:any){
     return this.http.post<any>(`${this.url}/active`, params, {headers: this.headers});
   }
 
-  postCompany(params: any){
-    return this.http.post<any>(this.url, params, {headers: this.headers});
+  postImage(params: any){
+    return this.http.post<any>(`${this.url}`, params, {headers: this.headers});
   }
 
-  putCompany(id: string, params: any){
+  putImage(id: any, params: any){
     return this.http.put<any>(`${this.url}/${id}`, params, {headers: this.headers});
   }
 
-  deleteCompany(id: string){
+  deleteImage(id: string){
     return this.http.delete<any>(`${this.url}/${id}`, {headers: this.headers});
   }
 }

@@ -1,49 +1,48 @@
 const { Router} = require('express');
 const { check } = require('express-validator');
 const { validateFields, validateJWT } = require('../middlewares');
-const { existCompanyForId, existCompanyForSlug } = require("../helpers/db-validators");
-const { companiesGet, companyPost, companyPut, companyShow, companyActive, companyDelete } = require("../controllers/companies.controller");
+const { galleryGet, galleryGetPublic, imagePost, imagePut, imageShow, imageActive, imageDelete } = require("../controllers/gallery.controller");
 
 const router = Router();
 
 router.get('/', [
     validateJWT
-] , companiesGet);
+] , galleryGet);
 
-router.post('/', [
-    validateJWT,
-    check('name', 'El nombre es obligatorio').not().isEmpty(),
-    validateFields
-], companyPost);
-
-router.put('/:id', [
-    validateJWT,
-    check('id', 'No es un id valido').isMongoId(),
-    check('id').custom(existCompanyForId),
-    validateFields
-], companyPut);
+router.get('/public', [
+    validateJWT
+] , galleryGetPublic);
 
 router.get('/:id', [
     validateJWT,
     check('id', 'No es un id valido').isMongoId(),
-    check('id').custom(existCompanyForId),
     validateFields
-], companyShow);
+], imageShow);
+
+router.post('/', [
+    validateJWT,
+    validateFields
+], imagePost);
+
+router.put('/:id', [
+    validateJWT,
+    check('id', 'No es un id valido').isMongoId(),
+    validateFields
+], imagePut);
+
 
 router.post('/active', [
     validateJWT,
     check('id', 'No es un id valido').isMongoId(),
     check('option', 'La opcion es obligatorio').not().isEmpty(),
-    check('id').custom(existCompanyForId),
     validateFields
-], companyActive);
+], imageActive);
 
 
 router.delete('/:id', [
     validateJWT,
     check('id', 'No es un id valido').isMongoId(),
-    check('id').custom(existCompanyForId),
     validateFields
-], companyDelete);
+], imageDelete);
 
 module.exports = router;

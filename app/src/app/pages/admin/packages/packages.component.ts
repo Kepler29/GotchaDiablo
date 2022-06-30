@@ -1,19 +1,16 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Package } from "../../../interfaces/package";
-import { SwalComponent } from "@sweetalert2/ngx-sweetalert2";
-import { BehaviorSubject, Subscription } from "rxjs";
-import { Title } from "@angular/platform-browser";
-import { PackagesService } from "../../../services/admin/packages.service";
-import { ConfirmationService, MessageService } from "primeng/api";
-
-// @ts-ignore
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Package} from "../../../interfaces/package";
+import {BehaviorSubject, Observable, Subscription} from "rxjs";
+import {AuthService, UserType} from "../../../modules/auth";
+import {Title} from "@angular/platform-browser";
+import {PackagesService} from "../../../services/admin/packages.service";
+import {NgForm} from "@angular/forms";
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 @Component({
   selector: 'app-packages',
   templateUrl: './packages.component.html',
-  styleUrls: ['./packages.component.scss'],
-  providers: [MessageService,ConfirmationService]
+  styleUrls: ['./packages.component.scss']
 })
 export class PackagesComponent implements OnInit {
 
@@ -22,49 +19,40 @@ export class PackagesComponent implements OnInit {
   packages: Package[]=[];
   packDialog: boolean;
   unit: boolean;
-  pack:Package=<Package>{
-    _id:  '',
+  pack:{ image: string; name: string; _id: string; price: number; description: string, intro: string; slug: string; active: boolean; delete: boolean }=<Package>{
+    _id: '',
     name: '',
     slug: '',
-    price: '',
+    price: 0,
     description: '',
     intro: '',
-    type: '',
     image: '',
-    details: false,
     active: true,
     delete: false
   };
-  @ViewChild('successSwal')
-  public readonly successSwal!: SwalComponent;
-  @ViewChild('successUpdateSwal')
-  public readonly successUpdateSwal!: SwalComponent;
-  @ViewChild('successDeleteSwal')
-  public readonly successDeleteSwal!: SwalComponent;
-  @ViewChild('dangerSwal')
-  public readonly dangerSwal!: SwalComponent;
-  @ViewChild('deleteSwal')
-  public readonly deleteSwal!: SwalComponent;
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   isLoading: boolean;
   submitted: boolean;
   selectedPackages: Package[];
+  roles:any[]=[];
   statuses: any[];
   types: any[];
   loading: boolean = true;
   image:any;
   imageInit:any;
   thumbnail:any;
-  public Editor = ClassicEditor;
+  create:boolean=false;
+  pError:boolean=false;
+  role={};
   private unsubscribe: Subscription[] = [];
+  signedUser$: Observable<UserType>;
 
 
   constructor(private titleService: Title,
               private cdr: ChangeDetectorRef,
               private service: PackagesService,
-              private messageService: MessageService,
-              private confirmationService: ConfirmationService) {
-    this.titleService.setTitle("Lista de Paquetes");
+              private auth: AuthService) {
+    this.titleService.setTitle("Paquetes");
     const loadingSubscr = this.isLoading$
         .asObservable()
         .subscribe((res) => (this.isLoading = res));
@@ -73,6 +61,7 @@ export class PackagesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getData();
+    this.signedUser$ = this.auth.currentUserSubject.asObservable();
   }
 
   setUnit(){
@@ -91,13 +80,17 @@ export class PackagesComponent implements OnInit {
         {label: 'Activo', value: true},
         {label: 'Des Activo', value: false},
       ];
-      this.types = [
-        {label: 'Programación', value: 'programming'},
-        {label: 'Hopedaje', value: 'host'},
-      ]
       this.cdr.detectChanges();
     }, error => {
       console.log(error);
+      this.isLoading$.next(false);
+      Swal.fire({
+        icon: 'error',
+        title: '¡Error!',
+        text: error.error.msg,
+        timer: 2000
+      });
+      this.cdr.detectChanges();
     });
   }
 
@@ -107,27 +100,34 @@ export class PackagesComponent implements OnInit {
     image.src = 'assets/images/missing.png'
   }
 
-  openNew() {
+  created() {
     this.pack = {
-      _id:  '',
+      _id: '',
       name: '',
       slug: '',
-      price: '',
+      price: 0,
       description: '',
       intro: '',
-      type: '',
       image: '',
-      details: false,
       active: true,
       delete: false
     };
+    this.image = '';
+    this.imageInit = '';
+    this.thumbnail = '';
+    this.create=true;
     this.submitted = false;
     this.packDialog = true;
   }
 
-  editPack(pack: Package) {
+  editPackage(pack: Package) {
     this.pack = {...pack};
+    this.image = '';
+    this.imageInit = pack.image;
+    this.thumbnail = '';
     this.packDialog = true;
+    this.create=false;
+    this.pError=false;
   }
 
   hideDialog() {
@@ -143,88 +143,179 @@ export class PackagesComponent implements OnInit {
     return true;
   }
 
-  savePack(){
-    this.submitted = true;
-
-    if (this.pack.name.trim() || this.pack.intro.trim() || this.pack.description.trim() || this.pack.price.trim()) {
-      if (this.isObjEmpty(this.pack)) {
-        console.log('vacio');
-        // this.store(this.pack.name, this.pack.price, this.pack.description, this.pack.intro, this.pack.type);
-      }
-      else {
-        this.update(this.pack.name, this.pack.price, this.pack.description, this.pack.intro, this.pack.type);
-      }
+  savePackage(form: NgForm){
+    if (this.create) {
+      this.store(form);
+    }
+    else {
+      this.update(form);
+    }
       this.packDialog = false;
       this.pack = {
-        _id:  '',
+        _id: '',
         name: '',
         slug: '',
-        price: '',
+        price: 0,
         description: '',
         intro: '',
-        type: '',
         image: '',
-        details: false,
         active: true,
         delete: false
       };
-      this.image = null;
-      this.imageInit = null;
-      this.thumbnail = null;
-    }
+      this.pError=false;
+    this.cdr.detectChanges();
   }
 
-  store(name: string, price: string, description: string, intro: string, type: string) {
+  store(form: NgForm) {
     this.isLoading$.next(true);
     let params = new FormData();
     params.append('Content-Type', 'multipart/form-data');
-    params.append('name', name);
-    params.append('price', price);
-    params.append('description', description);
-    params.append('type', type);
-    params.append('intro', intro);
+    params.append('name', form.value.name);
+    params.append('price', form.value.price);
+    params.append('intro', form.value.intro);
+    params.append('description', form.value.description);
     if (this.image){
       params.append('file', this.image);
     }
     this.service.postPackage(params).subscribe( response => {
+      console.log(response);
       this.packages.push(response.package);
       this.isLoading$.next(false);
+      Swal.fire({
+        icon: 'success',
+        title: '¡Exito!',
+        text: 'El Paquete se creó con exíto.',
+        timer: 2000
+      });
       this.cdr.detectChanges();
-      this.successSwal.fire();
     }, error => {
       console.log(error);
       this.isLoading$.next(false);
-      this.dangerSwal.text = error.error.msg;
+      Swal.fire({
+        icon: 'error',
+        title: '¡Error!',
+        text: error.error.msg,
+        timer: 2000
+      });
       this.cdr.detectChanges();
-      this.dangerSwal.fire();
     });
   }
 
-  update(name: string, price: string, description: string, intro: string, type: string) {
+  update(form: NgForm) {
     this.isLoading$.next(true);
     let params = new FormData();
     params.append('Content-Type', 'multipart/form-data');
-    params.append('name', name);
-    params.append('price', price);
-    params.append('description', description);
-    params.append('type', type);
-    params.append('intro', intro);
-    if (this.image){
+    params.append('name', form.value.name);
+    params.append('price', form.value.price);
+    params.append('intro', form.value.intro);
+    params.append('description', form.value.description);
+    if (this.image != ''){
       params.append('file', this.image);
     }
     this.service.putPackage(this.pack._id, params).subscribe( response => {
       const index = this.packages.findIndex(item => item._id == response.package._id);
       this.packages[index] = response.package;
       this.isLoading$.next(false);
+      this.getData();
+      Swal.fire({
+        icon: 'success',
+        title: '¡Exito!',
+        text: 'El Paquete se actualizo con exíto.',
+        timer: 3000
+      });
       this.cdr.detectChanges();
-      this.successUpdateSwal.fire();
     }, error => {
       console.log(error);
       this.isLoading$.next(false);
-      this.dangerSwal.text = error.error.msg;
+      Swal.fire({
+        icon: 'error',
+        title: '¡Error!',
+        text: error.error.msg,
+        timer: 2000
+      })
       this.cdr.detectChanges();
-      this.dangerSwal.fire();
     });
+  }
+
+
+  active(pack: string, option: boolean){
+    this.isLoading$.next(true);
+    let params = new FormData();
+    params.append('Content-Type', 'multipart/form-data');
+    params.append('id', pack);
+    params.append('option', option.toString());
+    this.service.activePackage(params).subscribe(response => {
+      let active = '';
+      const index = this.packages.findIndex(item => item._id == response.package._id);
+      this.packages[index] = response.package;
+      this.isLoading$.next(false);
+      this.getData();
+      if (response.package.active){
+        active = 'activo';
+      } else {
+        active = 'des activo';
+      }
+      Swal.fire({
+        icon: 'success',
+        title: '¡Exito!',
+        text: `El Paquete se ${active} con exíto.`,
+        timer: 2000
+      });
+      this.cdr.detectChanges();
+    }, error => {
+      console.log(error);
+      this.isLoading$.next(false);
+      Swal.fire({
+        icon: 'error',
+        title: '¡Error!',
+        text: error.error.msg,
+        timer: 2000
+      });
+      this.cdr.detectChanges();
+    });
+  }
+
+  delete(pack: string){
+    Swal.fire({
+      title: '¿Esta seguro que decea eliminar el Paquete?',
+      text: '¡Esta apunto de eliminar el Paquete!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.isLoading$.next(true);
+        this.service.deletePackage(pack).subscribe(response => {
+          const index = this.packages.findIndex(item => item._id == response.package._id);
+          this.packages.splice(index, 1);
+          this.isLoading$.next(false);
+          Swal.fire({
+            icon: 'success',
+            title: '¡Eliminado!',
+            text: 'El Paquete se elimino con exíto.',
+            timer: 2000
+          });
+          this.cdr.detectChanges();
+        }, error => {
+          console.log(error);
+          this.isLoading$.next(false);
+          Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: error.error.msg,
+            timer: 2000
+          });
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+            'Cancelado',
+            'No se elimino el control',
+            'error'
+        )
+      }
+    })
+    this.cdr.detectChanges();
   }
 
   getImage(e: any){
@@ -244,43 +335,6 @@ export class PackagesComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  active(pack: string, option: boolean){
-    this.isLoading$.next(true);
-    let params = new FormData();
-    params.append('Content-Type', 'multipart/form-data');
-    params.append('id', pack);
-    params.append('option', option.toString());
-    this.service.activePackage(params).subscribe(response => {
-      const index = this.packages.findIndex(item => item._id == response.package._id);
-      this.packages[index] = response.package;
-      this.isLoading$.next(false);
-      this.cdr.detectChanges();
-    }, error => {
-      console.log(error);
-      this.isLoading$.next(false);
-      this.dangerSwal.text = error.error.msg;
-      this.cdr.detectChanges();
-      this.dangerSwal.fire();
-    });
-  }
-
-  delete(pack: string){
-    this.isLoading$.next(true);
-    this.service.deletePackage(pack).subscribe(response => {
-      const index = this.packages.findIndex(item => item._id == response.package._id);
-      this.packages.splice(index, 1);
-      this.isLoading$.next(false);
-      this.cdr.detectChanges();
-      this.successDeleteSwal.fire();
-    }, error => {
-      console.log(error);
-      this.isLoading$.next(false);
-      this.dangerSwal.text = error.error.msg;
-      this.cdr.detectChanges();
-      this.dangerSwal.fire();
-    });
-
-  }
 
   ngOnDestroy() {
     this.unsubscribe.forEach((sb) => sb.unsubscribe());

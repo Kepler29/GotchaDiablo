@@ -28,12 +28,8 @@ export class UsersService {
     return this.http.get<any>(this.url + '/' + id, {headers: this.headers});
   }
 
-  activeUser(id: string){
-    return this.http.get<any>(this.url + '/active/' + id, {headers: this.headers});
-  }
-
-  desActiveUser(id: string){
-    return this.http.get<any>(this.url + '/des-active/' + id, {headers: this.headers});
+  activeUser(params:any){
+    return this.http.post<any>(`${this.url}/active`, params, {headers: this.headers});
   }
 
   postUser(params: any){

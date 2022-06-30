@@ -2,7 +2,6 @@ const { request, response } = require('express');
 const nodemailer = require('nodemailer');
 const { User, ResetPassword } = require("../models");
 
-// qkgbhcrsbdpckdtn
 
 const host = process.env.HOSTEMAIL;
 const emailGlobal = process.env.EMAIL;

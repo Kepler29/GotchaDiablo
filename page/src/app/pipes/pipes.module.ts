@@ -17,7 +17,8 @@ import { TruncatePipe } from './truncate.pipe';
   exports: [
     DomSanitizerPipe,
     ImagePipe,
-    ImageGalleryPipe
+    ImageGalleryPipe,
+    TruncatePipe
   ],
   imports: [
     CommonModule

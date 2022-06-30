@@ -5,6 +5,7 @@ export interface Package {
   price: number;
   bullets: number;
   description: string;
+  intro: string;
   image: string;
   active: boolean;
 }

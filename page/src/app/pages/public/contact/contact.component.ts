@@ -35,12 +35,14 @@ export class ContactComponent implements OnInit {
       });
     } else {
       this.isLoading = true;
+      console.log(form.value);
       let params = new FormData();
       params.append('Content-Type', 'multipart/form-data');
       params.append('name', form.value.name);
       params.append('email', form.value.email);
       params.append('telephone', form.value.telephone);
       params.append('message', form.value.message);
+      console.log(params);
       this.service.sendContact(params).subscribe(response => {
         console.log(response);
         Swal.fire({
@@ -63,8 +65,24 @@ export class ContactComponent implements OnInit {
     }
   }
 
+  btnValid(option: any){
+    if(!option && !this.isLoading){
+      return false;
+    }
+    return true;
+  }
+
   showResponse(event: any) {
     this.messageService.add({severity:'info', summary:'Succees', detail: 'User Responded', sticky: true});
+  }
+
+  resolved(captchaResponse: string) {
+    console.log(`Resolved captcha with response: ${captchaResponse}`);
+    if(captchaResponse != null){
+      this.recaptcha = true;
+    } else {
+      this.recaptcha = false;
+    }
   }
 
 }

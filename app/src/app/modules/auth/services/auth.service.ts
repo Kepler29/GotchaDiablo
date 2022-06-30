@@ -110,6 +110,30 @@ export class AuthService implements OnDestroy {
       .pipe(finalize(() => this.isLoadingSubject.next(false)));
   }
 
+  changePassword(params: any): Observable<UserType> {
+    const auth2 = this.getAuthFromLocalStorage();
+    this.isLoadingSubject.next(true);
+    // @ts-ignore
+    return this.authHttpService.changePassword(params, auth2.authToken)
+        .pipe(finalize(() => this.isLoadingSubject.next(false)));
+  }
+
+  findToken(token: string): Observable<UserType> {
+    this.isLoadingSubject.next(true);
+    return this.authHttpService.findToken(token).pipe(
+        map((auth: AuthModel) => {
+          const result = this.setAuthFromLocalStorage(auth);
+          return result;
+        }),
+        switchMap(() => this.getUserByToken()),
+        catchError((err) => {
+          console.error('err', err);
+          return of(undefined);
+        }),
+        finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
   // private methods
   private setAuthFromLocalStorage(auth: AuthModel): boolean {
     // store auth authToken/refreshToken/epiresIn in local storage to keep user logged in between page refreshes

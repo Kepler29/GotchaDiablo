@@ -1,15 +1,10 @@
 <!-- begin::Header -->
 <div class="card-header border-0 pt-5 d-flex justify-content-between">
     <h3 class="card-title align-items-start flex-column">
-        <span class="card-label fw-bolder fs-3 mb-1">Paquetes</span>
+        <span class="card-label fw-bolder fs-3 mb-1">Lista, creación, edición de Paquetes</span>
     </h3>
     <div class="card-toolbar">
-        <a class="cursor" (click)="openNew()" class="btn btn-sm btn-light-primary">
-            <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'"
-                  class="svg-icon svg-icon-3">
-            </span>
-            Crear
-        </a>
+        <button pButton pRipple type="button" icon="pi pi-plus" (click)="created()" label="Crear" class="p-button-rounded p-button-info" ></button>
     </div>
 </div>
 <button class="d-none" (click)="setUnit()" #btn></button>
@@ -21,7 +16,7 @@
         <p-table #dt [value]="packages" [(selection)]="selectedPackages" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true"
                  [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" responsiveLayout="scroll"
                  [paginator]="true" currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} paquetes"
-                 [filterDelay]="0" [globalFilterFields]="['name','price','intro','active']">
+                 [filterDelay]="0" [globalFilterFields]="['name', 'intro', 'active']">
             <ng-template pTemplate="caption">
                 <div class="bg-light- row flex align-items-center justify-content-end">
                     <div class="col">
@@ -38,23 +33,16 @@
             <ng-template pTemplate="header" class="bg-primary">
                 <tr>
                     <th style="width: 10rem">Imagen</th>
-                    <th style="width: 12rem" pSortableColumn="name">
+                    <th pSortableColumn="name">
                         <div class="flex justify-content-between align-items-center">
                             Nombre
                             <p-sortIcon field="name"></p-sortIcon>
                             <p-columnFilter type="text" field="name" display="menu" class="ml-auto"></p-columnFilter>
                         </div>
                     </th>
-                    <th style="width: 12rem" pSortableColumn="price">
-                        <div class="flex justify-content-between align-items-center">
-                            Precio
-                            <p-sortIcon field="price"></p-sortIcon>
-                            <p-columnFilter type="text" field="price" display="menu" class="ml-auto"></p-columnFilter>
-                        </div>
-                    </th>
                     <th pSortableColumn="intro">
                         <div class="flex justify-content-between align-items-center">
-                            Descripción
+                            Introducción
                             <p-sortIcon field="intro"></p-sortIcon>
                             <p-columnFilter type="text" field="intro" display="menu" class="ml-auto"></p-columnFilter>
                         </div>
@@ -81,36 +69,32 @@
                     </th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-pack>
-                <tr class="p-selectable-row">
+            <ng-template pTemplate="body" let-pack let-ri="rowIndex">
+                <tr class="p-selectable-row" >
                     <td>
                         <div class="d-flex align-items-center">
                             <div class="symbol me-5">
-                                <img [src]="pack._id | image: 'packages'" width="100px" class="cursor-pointer" [alt]="pack.name" (click)="editPack(pack)"/>
+                                <img [src]="pack._id | image: 'packages'" width="100px" class="cursor-pointer" [alt]="pack.name" (click)="editPackage(pack)"/>
                             </div>
                         </div>
                     </td>
-                    <td>
+                    <td (click)="editPackage(pack)">
                         <span class="p-column-title">nombre</span>
                         {{pack.name}}
                     </td>
-                    <td>
-                        <span class="p-column-title">precio</span>
-                        {{pack.price | currency}}
-                    </td>
-                    <td>
-                        <span class="p-column-title">descripción</span>
+                    <td (click)="editPackage(pack)">
+                        <span class="p-column-title">nombre</span>
                         <span [innerHTML]="pack.intro"></span>
                     </td>
                     <td>
                         <span class="p-column-title">status</span>
                         <span class="badge badge-light-success fs-7 fw-bold" *ngIf="pack.active">Activo</span>
-                        <span class="badge badge-light-danger fs-7 fw-bold" *ngIf="!pack.active">Des Activo</span>
+                        <span class="badge badge-light-danger fs-7 fw-bold" *ngIf="!pack.active">In Activo</span>
                     </td>
-                    <td style="text-align: center">
+                    <td style="text-align: center" >
                         <!--                        <button pButton type="button" class="p-button-secondary" icon="pi pi-cog"></button>-->
                         <button type="button" (click)="active(pack._id, !pack.active)"
-                                [title]="pack.active ? 'Des Activar':'Activar'"
+                                [title]="pack.active ? 'Desactivar':'Activar'"
                                 class="btn btn-icon btn-bg-light btn-sm me-1"
                                 [class.btn-active-color-danger]="pack.active"
                                 [class.btn-active-color-success]="!pack.active"
@@ -124,7 +108,7 @@
                                 </span>
                             </ng-container>
                         </button>
-                        <button type="button" (click)="editPack(pack)" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" title="Editar" [disabled]="isLoading">
+                        <button type="button" (click)="editPackage(pack)" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" title="Editar" [disabled]="isLoading">
                             <ng-container *ngIf="!isLoading">
                                 <span [inlineSVG]="'./assets/media/icons/duotune/art/art005.svg'" class="svg-icon svg-icon-3"></span>
                             </ng-container>
@@ -134,7 +118,11 @@
                                 </span>
                             </ng-container>
                         </button>
-                        <button type="button" title="Eliminar" [swal]="deleteSwal" (confirm)="delete(pack._id)" class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm cursor-pointer" [disabled]="isLoading">
+                        <button type="button"
+                                title="Eliminar"
+                                (click)="delete(pack._id)"
+                                class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm cursor-pointer"
+                                [disabled]="isLoading">
                             <ng-container *ngIf="!isLoading">
                                 <span [inlineSVG]="'./assets/media/icons/duotune/general/gen027.svg'" class="svg-icon svg-icon-3"></span>
                             </ng-container>
@@ -153,55 +141,49 @@
                 </tr>
             </ng-template>
         </p-table>
-        <p-dialog [(visible)]="packDialog" [style]="{width: '450px'}"  header="Paquete" [modal]="true" styleClass="p-fluid">
-            <ng-template pTemplate="content">
-                <img [src]="thumbnail" *ngIf="thumbnail" width="150px" class="img-fluid cursor-pointer" (click)="file.click()">
-                <img src="assets/media/misc/image.png" *ngIf="!imageInit && !thumbnail && !pack.image" width="150px" class="img-fluid cursor-pointer" (click)="file.click()">
-                <img [src]="pack._id | image: 'packages'" [alt]="pack.image" width="150px" class="product-image cursor-pointer" *ngIf="pack.image && !thumbnail" (click)="file.click()">
-                <input type="file" name="image" id="image" class="d-none" (change)="getImage($event)" #file>
-                <div class="field">
-                    <label for="name">Nombre</label>
-                    <input type="text" pInputText id="name"  [(ngModel)]="pack.name" required />
-                    <small class="p-error" *ngIf="submitted && !pack.name">El nombre es obligatorio.</small>
-                </div>
-                <div class="field">
-                    <label for="types">Tipo</label>
-                    <p-dropdown [(ngModel)]="pack.type" inputId="types" id="types" [options]="types" placeholder="Selecciona un tipo">
-                        <ng-template let-option pTemplate="item">
-                            <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
-                        </ng-template>
-                    </p-dropdown>
-                </div>
-                <div class="field">
-                    <label for="intro">Introducción</label>
-                    <ckeditor [editor]="Editor" [(ngModel)]="pack.intro"  [data]="pack.intro" name="intro" id="intro"></ckeditor>
-                    <small class="p-error" *ngIf="submitted && !pack.name">La introducción es obligatorio.</small>
-                </div>
-
-                <div class="field">
-                    <label for="description">Description</label>
-                    <ckeditor [editor]="Editor" [(ngModel)]="pack.description"  [data]="pack.description" name="description" id="description"></ckeditor>
-                    <small class="p-error" *ngIf="submitted && !pack.name">La descripción es obligatorio.</small>
-                </div>
-
-                <div class="formgrid grid mt-3">
-                    <div class="field col">
-                        <label for="price">Precio</label>
-                        <p-inputNumber id="price" class="form-control p-5" [(ngModel)]="pack.price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
-                        <small class="p-error" *ngIf="submitted && !pack.name">El precio es obligatorio.</small>
-                    </div>
-                </div>
-            </ng-template>
-
-            <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="savePack()"></button>
-            </ng-template>
-        </p-dialog>
-        <swal title="Exito" text="El paquete se creo con exito" icon="success" #successSwal></swal>
-        <swal title="Exito" text="El paquete se actualizo con exito" icon="success" #successUpdateSwal></swal>
-        <swal title="Exito" text="El paquete se Elimino con exito" icon="success" #successDeleteSwal></swal>
-        <swal title="Error" [text]="dangerSwal.text" icon="error" #dangerSwal></swal>
-        <swal text="Esta seguro que desea eliminar el paquete" icon="question" [showCancelButton]="true" [focusCancel]="true" #deleteSwal></swal>
     </div>
 </div>
+
+<p-dialog [header]="create ? 'Crear Paquete':'Editar Paquete ' + pack.name" [(visible)]="packDialog" [modal]="true" [breakpoints]="{'960px': '75vw'}" [style]="{width: '50vw'}"
+          [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="body">
+        <form (ngSubmit)="savePackage(formCreate)"  #formCreate="ngForm">
+            <img [src]="thumbnail" *ngIf="thumbnail" width="150px" class="img-fluid cursor-pointer" (click)="file.click()">
+            <img src="assets/media/misc/image.png" *ngIf="!imageInit && !thumbnail && !pack.image" width="150px" class="img-fluid cursor-pointer" (click)="file.click()">
+            <img [src]="pack._id | image: 'companies'" [alt]="pack.image" width="150px" class="product-image cursor-pointer" *ngIf="pack.image && !thumbnail" (click)="file.click()">
+            <input type="file" name="image" id="image" class="d-none" (change)="getImage($event)" #file>
+            <div class="p-fluid grid row">
+                <div class="field col-12 mt-5 pt-3">
+                  <span class="p-float-label">
+                      <input type="text" id="name" name="name" pInputText [(ngModel)]="pack.name" autocomplete="off" required>
+                      <label for="name">Nombre</label>
+                  </span>
+                </div>
+            </div>
+            <div class="p-fluid grid row">
+                <div class="field col-12 mt-5 pt-3">
+                      <span class="p-float-label">
+                          <p-inputNumber [(ngModel)]="pack.price" [showButtons]="true" id="price" inputId="price" name="price" mode="currency" currency="MXN" [required]="true"></p-inputNumber>
+                          <label for="price">Precio</label>
+                      </span>
+                </div>
+            </div>
+            <div class="field col-12 mt-5 pt-3">
+                <h5>Intro</h5>
+                <p-editor name="intro" [(ngModel)]="pack.intro" [style]="{'height':'120px'}"></p-editor>
+            </div>
+            <div class="field col-12 mt-5 pt-3">
+                <h5>Descripción</h5>
+                <p-editor name="description" [(ngModel)]="pack.description" [style]="{'height':'220px'}"></p-editor>
+            </div>
+            <div class="d-flex justify-content-end mt-5">
+                <p-button icon="pi pi-ban" (click)="packDialog=false" label="Cancelar" styleClass="p-button-rounded p-button-secondary p-button-text"></p-button>
+                <p-button type="submit" icon="pi pi-check"
+                          *ngIf="formCreate.valid"
+                          label="Guardar"
+                          styleClass="p-button-rounded p-button-success"></p-button>
+            </div>
+        </form>
+    </ng-template>
+</p-dialog>
+

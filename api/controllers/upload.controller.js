@@ -1,6 +1,6 @@
 const {request, response} = require("express");
 const { fileUpload: fileUploadHelper } = require("../helpers");
-const { User, Company, Package} = require('../models');
+const { User, Image, Package} = require('../models');
 const path = require("path");
 const fs = require("fs");
 
@@ -9,7 +9,7 @@ const fileUpload = async (req = request, res = response) => {
 
     try{
         // const name = await fileUploadHelper(req.files, ['txt', 'md'], 'textos');
-        const name = await fileUploadHelper(req.files, undefined, 'companies');
+        const name = await fileUploadHelper(req.files, undefined, 'gallery');
         res.json({
             name
         });
@@ -26,8 +26,8 @@ const fileUploadGallery = async (req = request, res = response) => {
         let model;
         const name = await fileUploadHelper(req.files, undefined, collection);
         switch (collection) {
-            case 'companies':
-                model = await Company.findById(id);
+            case 'gallery':
+                model = await Image.findById(id);
                 break;
             case 'packages':
                 model = await Package.findById(id);
@@ -59,8 +59,8 @@ const updatedFile = async (req= request, res=response) =>{
                 });
             }
             break;
-        case 'companies':
-            model = await Company.findById(id);
+        case 'gallery':
+            model = await Image.findById(id);
             if (!model){
                 return  res.status(400).json({
                     msg: `No existe una noticia con el id ${id}`
@@ -115,8 +115,8 @@ const imageShow = async (req= request, res= response) => {
                 });
             }
             break;
-        case 'companies':
-            model = await Company.findById(id);
+        case 'gallery':
+            model = await Image.findById(id);
             if (!model){
                 return  res.status(400).json({
                     msg: `No existe una compañia con el id ${id}`
@@ -161,8 +161,8 @@ const imageShowGallery = async (req= request, res= response) => {
                 });
             }
             break;
-        case 'companies':
-            model = await Company.findById(id);
+        case 'gallery':
+            model = await Image.findById(id);
             if (!model){
                 return  res.status(400).json({
                     msg: `No existe una noticia con el id ${id}`
@@ -207,8 +207,8 @@ const deletedFile = async (req= request, res=response) =>{
                 });
             }
             break;
-        case 'companies':
-            model = await Company.findById(id);
+        case 'gallery':
+            model = await Image.findById(id);
             if (!model){
                 return  res.status(400).json({
                     msg: `No existe una noticia con el id ${id}`
@@ -264,8 +264,8 @@ const deletedImageGallery = async (req= request, res=response) =>{
                 });
             }
             break;
-        case 'companies':
-            model = await Company.findById(id);
+        case 'gallery':
+            model = await Image.findById(id);
             if (!model){
                 return  res.status(400).json({
                     msg: `No existe una noticia con el id ${id}`
