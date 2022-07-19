@@ -9,9 +9,7 @@ router.get('/', [
     validateJWT
 ] , galleryGet);
 
-router.get('/public', [
-    validateJWT
-] , galleryGetPublic);
+router.get('/public', galleryGetPublic);
 
 router.get('/:id', [
     validateJWT,
