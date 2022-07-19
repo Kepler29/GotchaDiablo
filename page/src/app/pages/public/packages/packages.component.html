@@ -1,1 +1,24 @@
-<p>packages works!</p>
+<div class="container mb-5">
+    <h1 class="text-center my-4 title-packages">Paquetes</h1>
+  <div class="row d-flex justify-content-center">
+    <div class="col-12 col-md-6 col-lg-4 mt-5" *ngFor="let package of packages">
+      <div class="card-package">
+        <div class="header-card">
+          <h3>{{ package.name }}</h3>
+        </div>
+        <div class="description-card">
+          <div class="row mx-3">
+            <h1 class="card-price">{{ package.price | currency: 'MXN': 'symbol-narrow' }}</h1>
+          </div>
+          <p class="card-text-description" [innerHTML]="package.description"></p>
+          <p class="card-text-intro" [innerHTML]="package.intro"></p>
+        </div>
+        <div class="row btn-card">
+          <div class="col-12">
+            <button pButton pRipple type="button" [routerLink]="['/paquetes', package.slug]" icon="pi pi-eye" label="Ver más" class="p-button-outlined p-button-rounded p-button-danger float-end btn-more"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

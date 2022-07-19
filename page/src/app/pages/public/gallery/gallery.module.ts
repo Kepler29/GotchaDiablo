@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { GalleryRoutingModule } from './gallery-routing.module';
 import { GalleryComponent } from './gallery.component';
+import { GalleriaModule } from 'primeng/galleria';
+import { PipesModule } from '../../../pipes/pipes.module'
 
 
 @NgModule({
@@ -11,7 +13,9 @@ import { GalleryComponent } from './gallery.component';
   ],
   imports: [
     CommonModule,
-    GalleryRoutingModule
+    GalleryRoutingModule,
+    GalleriaModule,
+    PipesModule
   ]
 })
 export class GalleryModule { }

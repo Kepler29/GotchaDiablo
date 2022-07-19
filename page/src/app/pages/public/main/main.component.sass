@@ -1,10 +1,12 @@
+@import "src/assets/sass/variables"
+  
 .card-package
   height: 35rem
   border-radius: 5px
   box-shadow: 5px 5px 15px gray
 
 .title-packages
-  font-size: 5rem
+  font-size: 2rem
   font-weight: bold
 
 .btn-more
@@ -31,7 +33,7 @@
   .card-price
     padding: 1rem 0
     font-weight: bold
-    font-size: 5rem
+    font-size: 2rem
     text-align: center
 
   .card-text-description, .card-text-intro
@@ -44,3 +46,24 @@
   .card-text-intro
     margin-top: 2rem
     height: 7rem
+
+@media (min-width: $sm)
+  .title-packages
+    font-size: 5rem
+
+  .description-card
+
+    .card-price
+      font-size: 3rem
+
+@media (min-width: $xl)
+  .description-card
+
+    .card-price
+      font-size: 4rem 
+
+@media (min-width: $xxl)
+  .description-card
+
+    .card-price
+      font-size: 5rem             
