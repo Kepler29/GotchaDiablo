@@ -19,6 +19,14 @@ const Routing: Routes = [
     loadChildren: () => import('../pages/admin/gallery/gallery.module').then(m => m.GalleryModule)
   },
   {
+    path: 'reservations',
+    loadChildren: () => import('../pages/admin/reservations/reservations.module').then(m => m.ReservationsModule)
+  },
+  {
+    path: 'promotions',
+    loadChildren: () => import('../pages/admin/promotions/promotions.module').then(m => m.PromotionsModule)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full',

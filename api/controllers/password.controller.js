@@ -89,8 +89,7 @@ const findTokenPost = async (req = request, res = response) => {
     const webToken = await generateJWT(user._id);
 
     res.json({
-        user,
-        webToken
+        authToken: webToken
     });
 }
 

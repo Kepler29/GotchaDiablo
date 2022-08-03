@@ -17,10 +17,79 @@ const userGet = async (req, res = response) => {
     });
 };
 
+const passwordPost = async (req = request, res = response) => {
+
+    const { currentPassword, password, id } = req.body;
+
+    let user = await User.findById(id);
+    // Verificar contraseña
+    const validPassword = bcryptjs.compareSync(password, user.password);
+    if (!validPassword){
+        return res.status(400).json({
+            msg: " La contraseña actual no es correcta"
+        });
+    }
+
+    // Encriptar contraseña
+    const salt = bcryptjs.genSaltSync();
+    user.password = bcryptjs.hashSync(password, salt);
+
+    // Guardar en Base de datos
+    await user.save();
+
+    res.json({
+        user
+    })
+}
+
+const emailPost = async (req = request, res = response) => {
+
+    const { email, id } = req.body;
+
+    const user = await User.findByIdAndUpdate(id, {email}, {new: true});
+
+    res.json({
+        user
+    })
+}
+
+const detailsPost = async (req = request, res = response) => {
+
+    const { name, phone, country, id } = req.body;
+
+    const user = await User.findByIdAndUpdate(id, {name, phone, country}, {new: true});
+
+    res.json({
+        user
+    })
+}
+
 const userPost = async (req = request, res = response) => {
 
     const { name, email, password, role, forcePass } = req.body;
     const user = new User({name, email, password, role, forcePass });
+
+    // Encriptar contraseñana
+    const salt = bcryptjs.genSaltSync();
+    user.password = bcryptjs.hashSync(password, salt);
+
+    // Guardar en Base de datos
+    await user.save();
+
+    // Generar JWT
+    const token = await generateJWT(user._id);
+
+    res.json({
+        user,
+        token
+    })
+}
+
+const userRegistration = async (req = request, res = response) => {
+
+    const { name, email, password } = req.body;
+    const user = new User({name, email, role: 'USER_ROLE' });
+
 
     // Encriptar contraseñana
     const salt = bcryptjs.genSaltSync();
@@ -124,7 +193,11 @@ module.exports = {
     userPost,
     userActive,
     userDesActive,
+    userRegistration,
     userShow,
     userPut,
-    userDelete
+    userDelete,
+    detailsPost,
+    emailPost,
+    passwordPost
 }

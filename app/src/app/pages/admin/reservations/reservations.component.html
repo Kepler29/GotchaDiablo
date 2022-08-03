@@ -1,0 +1,188 @@
+<!-- begin::Header -->
+<div class="card-header border-0 pt-5 d-flex justify-content-between">
+    <h3 class="card-title align-items-start flex-column">
+        <span class="card-label fw-bolder fs-3 mb-1">Lista, creación, edición de Reservaciones</span>
+    </h3>
+    <div class="card-toolbar">
+        <button pButton pRipple type="button" icon="pi pi-plus" (click)="created()" label="Crear" class="p-button-rounded p-button-info" ></button>
+    </div>
+</div>
+<button class="d-none" (click)="setUnit()" #btn></button>
+<!-- end::Header -->
+<!-- begin::Body -->
+<div class="card-body py-3">
+    <!-- begin::Table container -->
+    <div class="table-responsive">
+        <p-table #dt [value]="reservations" [(selection)]="selectedReservations" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true"
+                 [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" responsiveLayout="scroll"
+                 [paginator]="true" currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} usuarios"
+                 [filterDelay]="0" [globalFilterFields]="['user.name','date', 'active']">
+            <ng-template pTemplate="caption">
+                <div class="bg-light- row flex align-items-center justify-content-end">
+                    <div class="col">
+                        <h5 class="m-0"></h5>
+                    </div>
+                    <div class="col d-flex  justify-content-end">
+                        <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal(search.value, 'contains')" placeholder="Busqueda Global" #search/>
+                    </span>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header" class="bg-primary">
+                <tr>
+                    <th pSortableColumn="user.name">
+                        <div class="flex justify-content-between align-items-center">
+                            Usuario
+                            <p-sortIcon field="user.name"></p-sortIcon>
+                            <p-columnFilter type="text" field="user.name" display="menu" class="ml-auto"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th pSortableColumn="date">
+                        <div class="flex justify-content-between align-items-center">
+                            Fecha y Hora
+                            <p-sortIcon field="date"></p-sortIcon>
+                            <p-columnFilter type="date" field="date" display="menu" class="ml-auto"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th  style="width: 12rem" pSortableColumn="active">
+                        <div class="flex justify-content-between align-items-center">
+                            Status
+                            <p-sortIcon field="active"></p-sortIcon>
+                            <p-columnFilter field="active" matchMode="equals" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Todos" [showClear]="true">
+                                        <ng-template let-option pTemplate="item">
+                                            <span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
+                                        </ng-template>
+                                    </p-dropdown>
+                                </ng-template>
+                            </p-columnFilter>
+                        </div>
+                    </th>
+                    <th style="width: 12rem">
+                        <div class="flex justify-content-end align-items-center">
+                            <span class="float-end">Acciones</span>
+                        </div>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-reservation let-ri="rowIndex">
+                <tr class="p-selectable-row" *ngIf="reservation.role != 'SUPER_ADMIN_ROLE'">
+                    <td (click)="editReservation(reservation)">
+                        <span class="p-column-title">usuario</span>
+                        <span *ngIf=" reservation.user">{{reservation.user.name}}</span>
+                    </td>
+                    <td (click)="editReservation(reservation)">
+                        <span class="p-column-title">fecha</span>
+                        {{ reservation.date | date: 'short' }}
+                    </td>
+                    <td>
+                        <span class="p-column-title">status</span>
+                        <span class="badge badge-light-success fs-7 fw-bold" *ngIf="reservation.active">Activo</span>
+                        <span class="badge badge-light-danger fs-7 fw-bold" *ngIf="!reservation.active">In Activo</span>
+                    </td>
+                    <td style="text-align: center">
+                        <!--                        <button pButton type="button" class="p-button-secondary" icon="pi pi-cog"></button>-->
+                        <button type="button" (click)="active(reservation._id, !reservation.active)"
+                                [title]="reservation.active ? 'Desactivar':'Activar'"
+                                class="btn btn-icon btn-bg-light btn-sm me-1"
+                                [class.btn-active-color-danger]="reservation.active"
+                                [class.btn-active-color-success]="!reservation.active"
+                                [disabled]="isLoading">
+                            <ng-container *ngIf="!isLoading">
+                                <span [inlineSVG]="'./assets/media/icons/duotune/general/gen019.svg'" class="svg-icon svg-icon-3"></span>
+                            </ng-container>
+                            <ng-container *ngIf="isLoading">
+                                <span class="indicator-progress" [style.display]="'block'">
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </ng-container>
+                        </button>
+                        <button type="button" (click)="editReservation(reservation)" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" title="Editar" [disabled]="isLoading">
+                            <ng-container *ngIf="!isLoading">
+                                <span [inlineSVG]="'./assets/media/icons/duotune/art/art005.svg'" class="svg-icon svg-icon-3"></span>
+                            </ng-container>
+                            <ng-container *ngIf="isLoading">
+                                <span class="indicator-progress" [style.display]="'block'">
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </ng-container>
+                        </button>
+                        <button type="button"
+                                title="Eliminar"
+                                (click)="delete(reservation.uid)"
+                                class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm cursor-pointer"
+                                [disabled]="isLoading">
+                            <ng-container *ngIf="!isLoading">
+                                <span [inlineSVG]="'./assets/media/icons/duotune/general/gen027.svg'" class="svg-icon svg-icon-3"></span>
+                            </ng-container>
+                            <ng-container *ngIf="isLoading">
+                                <span class="indicator-progress" [style.display]="'block'">
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </ng-container>
+                        </button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="8">No se encontro ningun usuario.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+
+<p-dialog [header]="create ? 'Crear Reservación del Usuario':'Editar Reservación del Usuario ' + reservation.user.name" [(visible)]="reservationDialog"
+          [modal]="true" [breakpoints]="{'960px': '75vw'}" [style]="{width: '50vw'}"
+          [draggable]="true" [resizable]="true">
+    <ng-template pTemplate="body">
+        <form (ngSubmit)="saveReservation(formCreate)"  #formCreate="ngForm">
+            <div class="p-fluid grid row">
+                <div class="field col-12 mt-5 pt-3">
+                  <span class="p-float-label">
+                      <p-dropdown [options]="users"
+                                  [(ngModel)]="user"
+                                  optionLabel="name"
+                                  name="user"
+                                  id="user"
+                                  [filter]="true"
+                                  filterBy="name"
+                                  [showClear]="true"
+                                  [required]="true"
+                                  placeholder="Selecione un usuario">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="country-item country-item-value" *ngIf="user">
+                                <div>{{user.name}}</div>
+                            </div>
+                        </ng-template>
+                        <ng-template let-userD pTemplate="item">
+                            <div class="country-item">
+                                <div>{{userD.name}}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+<!--                      <label for="user">Usuario</label>-->
+                  </span>
+                </div>
+                <div class="field col-12 mt-5 pt-3">
+                  <span class="p-float-label">
+                      <label for="date">Fecha de la reservación</label>
+                      <p-calendar [(ngModel)]="date" [inline]="true" hourFormat="12" [showTime]="true" name="date" inputId="date" id="date"></p-calendar>
+                  </span>
+                </div>
+
+            </div>
+            <div class="d-flex justify-content-end mt-5">
+                <p-button icon="pi pi-ban" (click)="reservationDialog=false" label="Cancelar" styleClass="p-button-rounded p-button-secondary p-button-text"></p-button>
+                <p-button type="submit" icon="pi pi-check"
+                          *ngIf="formCreate.valid"
+                          label="Guardar"
+                          styleClass="p-button-rounded p-button-success"></p-button>
+            </div>
+        </form>
+    </ng-template>
+</p-dialog>

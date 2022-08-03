@@ -12,20 +12,22 @@
         <i class="pi pi-youtube"></i>
       </a>
     </div>
-    <div class="social">
-      <a class="h-google d-md-none cursor" (click)="logout()" *ngIf="user">
+    <div class="social" *ngIf="user$ | async as _user">
+      <a class="h-google d-md-none cursor" (click)="logout()">
         <i class="pi pi-sign-out"></i>
       </a>
-      <a class="h-google d-md-none" target="_blank" [href]="API_ADMIN_URL" *ngIf="user && user.role == 'ADMIN_ROLE'">
+      <a class="h-google d-md-none" [routerLink]="[API_ADMIN_URL]" target="_blank" [href]="API_ADMIN_URL" *ngIf="_user.role == 'ADMIN_ROLE'">
         <i class="pi pi-user"></i>
       </a>
-      <a class="h-google d-md-none" routerLink="/user/profile" *ngIf="user && user.role == 'USER_ROLE'">
+      <a class="h-google d-md-none" routerLink="/perfil" *ngIf="_user.role == 'USER_ROLE'">
         <i class="pi pi-user"></i>
       </a>
-      <a class="h-google d-md-none" routerLink="/sign/login" *ngIf="!user">
+    </div>
+    <div class="social" [ngClass]="{'d-none': user$ | async}">
+      <a class="h-google d-md-none" routerLink="/auth/login">
         <i class="pi pi-sign-in"></i>
       </a>
-      <a class="h-google d-md-none" routerLink="/sign/registro" *ngIf="!user">
+      <a class="h-google d-md-none" routerLink="/auth/registro">
         <i class="pi pi-user"></i>
       </a>
     </div>

@@ -14,7 +14,7 @@ const login = async (req = request, res = response) => {
         const user = await User.findOne({email});
         if(!user){
             return res.status(400).json({
-                msg: " Usuario / Password no son incorrectos"
+                msg: " Usuario / Password no son correctos"
             });
         }
 
@@ -25,10 +25,10 @@ const login = async (req = request, res = response) => {
             });
         }
 
-        // Verificar si el usuario esta activo
+        // Verificar si el usuario esta eliminado
         if(user.delete){
             return res.status(400).json({
-                msg: " Usuario / Password no son incorrectos"
+                msg: " Usuario no se encuentra en nuestras bases"
             });
         }
 
@@ -36,7 +36,7 @@ const login = async (req = request, res = response) => {
         const validPassword = bcryptjs.compareSync(password, user.password);
         if (!validPassword){
             return res.status(400).json({
-                msg: " Usuario / Password no son incorrectos"
+                msg: " Usuario / Password no son correctos"
             });
         }
 
@@ -61,8 +61,9 @@ const me = async (req = request, res = response) => {
     res.json({
         id: user.id,
         name: user.name,
-        password: user.password,
         email: user.email,
+        country: user.country,
+        phone: user.phone,
         role: user.role,
         image: user.image,
         active: user.active,

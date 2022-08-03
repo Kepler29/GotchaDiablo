@@ -150,7 +150,7 @@
         <form (ngSubmit)="savePackage(formCreate)"  #formCreate="ngForm">
             <img [src]="thumbnail" *ngIf="thumbnail" width="150px" class="img-fluid cursor-pointer" (click)="file.click()">
             <img src="assets/media/misc/image.png" *ngIf="!imageInit && !thumbnail && !pack.image" width="150px" class="img-fluid cursor-pointer" (click)="file.click()">
-            <img [src]="pack._id | image: 'companies'" [alt]="pack.image" width="150px" class="product-image cursor-pointer" *ngIf="pack.image && !thumbnail" (click)="file.click()">
+            <img [src]="pack._id | image: 'packages'" [alt]="pack.image" width="150px" class="product-image cursor-pointer" *ngIf="pack.image && !thumbnail" (click)="file.click()">
             <input type="file" name="image" id="image" class="d-none" (change)="getImage($event)" #file>
             <div class="p-fluid grid row">
                 <div class="field col-12 mt-5 pt-3">

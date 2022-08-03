@@ -1,0 +1,86 @@
+<div class="card mb-5 mb-xl-10" id="kt_profile_details_view">
+  <div class="card-header cursor-pointer">
+    <div class="card-title m-0">
+      <h3 class="fw-bolder m-0">Detalles del perfil</h3>
+    </div>
+    <a routerLink="/perfil/ajustes" class="btn btn-primary align-self-center">
+      Editar perfil
+    </a>
+  </div>
+
+  <div class="card-body p-9" *ngIf="user$ | async as _user">
+    <div class="row mb-7">
+      <label class="col-lg-4 fw-bold text-muted">Nombre Completo</label>
+      <div class="col-lg-8">
+        <span class="fw-bolder fs-6 text-dark">{{ _user.name }}</span>
+      </div>
+    </div>
+
+    <div class="row mb-7">
+      <label class="col-lg-4 fw-bold text-muted">
+        Teléfono de contacto
+        <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip" title="Phone number must be active"></i>
+      </label>
+
+      <div class="col-lg-8 d-flex align-items-center">
+        <span class="fw-bolder fs-6 me-2">{{ _user.phone }}</span>
+<!--        <span class="badge badge-success">Verified</span>-->
+      </div>
+    </div>
+
+    <div class="row mb-7">
+      <label class="col-lg-4 fw-bold text-muted">
+        Pais
+        <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip" title="Country of origination"></i>
+      </label>
+
+      <div class="col-lg-8">
+        <span class="fw-bolder fs-6 text-dark">{{ _user.country }}</span>
+      </div>
+    </div>
+
+    <div class="row mb-7">
+      <label class="col-lg-4 fw-bold text-muted">Comunicación</label>
+
+      <div class="col-lg-8">
+        <span class="fw-bolder fs-6 text-dark">Email, Telefono</span>
+      </div>
+    </div>
+
+    <div class="row mb-10">
+      <label class="col-lg-4 fw-bold text-muted">Permitir cambios</label>
+
+      <div class="col-lg-8">
+        <span class="fw-bold fs-6">Si</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--<div class="row gy-10 gx-xl-10">-->
+<!--  <div class="col-xl-6">-->
+<!--    <app-charts-widget1-->
+<!--      class="card card-xxl-stretch mb-5 mb-xl-10"-->
+<!--    ></app-charts-widget1>-->
+<!--  </div>-->
+
+<!--  <div class="col-xl-6">-->
+<!--    <app-tables-widget1-->
+<!--      class="card card-xxl-stretch mb-5 mb-xl-10"-->
+<!--    ></app-tables-widget1>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<div class="row gy-10 gx-xl-10">-->
+<!--  <div class="col-xl-6">-->
+<!--    <app-lists-widget5-->
+<!--      class="card card-xxl-stretch mb-5 mb-xl-10"-->
+<!--    ></app-lists-widget5>-->
+<!--  </div>-->
+
+<!--  <div class="col-xl-6">-->
+<!--    <app-tables-widget5-->
+<!--      class="card card-xxl-stretch mb-5 mb-xl-10"-->
+<!--    ></app-tables-widget5>-->
+<!--  </div>-->
+<!--</div>-->

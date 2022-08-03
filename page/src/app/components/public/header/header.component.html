@@ -50,9 +50,24 @@
             Galeria
           </a>
         </li>
+        <li routerLink="/reservaciones" (click)="!displayMenu ? openMenu(): ''" class="cursor">
+          <a>
+            Reservaciones
+          </a>
+        </li>
         <li routerLink="/contacto" (click)="!displayMenu ? openMenu(): ''" class="cursor">
           <a>
             Contacto
+          </a>
+        </li>
+        <li (click)="logout()" class="cursor" *ngIf="user$ | async as _user">
+          <a>
+            Salir
+          </a>
+        </li>
+        <li routerLink="/auth/login" (click)="!displayMenu ? openMenu(): ''" class="cursor" [ngClass]="{'d-none': user$ | async}">
+          <a>
+            Entrar
           </a>
         </li>
       </ul>

@@ -14,6 +14,8 @@ class Server{
             emails: '/api/emails',
             packages: '/api/packages',
             password: '/api/password',
+            promotions: '/api/promotions',
+            reservations: '/api/reservations',
             search: '/api/search',
             users: '/api/users',
             uploads: '/api/uploads',
@@ -50,6 +52,8 @@ class Server{
         this.app.use(this.paths.emails, require('../routes/emails.route'));
         this.app.use(this.paths.packages, require('../routes/packages.route'));
         this.app.use(this.paths.password, require('../routes/password.route'));
+        this.app.use(this.paths.promotions, require('../routes/promotions.route'));
+        this.app.use(this.paths.reservations, require('../routes/reservations.route'));
         this.app.use(this.paths.search, require('../routes/search.route'));
         this.app.use(this.paths.uploads, require('../routes/upload.route'));
         this.app.use(this.paths.users, require('../routes/user.route'));

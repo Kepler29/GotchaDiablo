@@ -1,6 +1,6 @@
 const {request, response} = require("express");
 const { fileUpload: fileUploadHelper } = require("../helpers");
-const { User, Image, Package} = require('../models');
+const { User, Image, Promotion, Package} = require('../models');
 const path = require("path");
 const fs = require("fs");
 
@@ -31,6 +31,9 @@ const fileUploadGallery = async (req = request, res = response) => {
                 break;
             case 'packages':
                 model = await Package.findById(id);
+                break;
+            case 'promotions':
+                model = await Promotion.findById(id);
                 break;
         }
         const images = model.images;
@@ -63,7 +66,7 @@ const updatedFile = async (req= request, res=response) =>{
             model = await Image.findById(id);
             if (!model){
                 return  res.status(400).json({
-                    msg: `No existe una noticia con el id ${id}`
+                    msg: `No existe una imagen con el id ${id}`
                 });
             }
             break;
@@ -71,7 +74,15 @@ const updatedFile = async (req= request, res=response) =>{
             model = await Package.findById(id);
             if (!model){
                 return  res.status(400).json({
-                    msg: `No existe una categoria con el id ${id}`
+                    msg: `No existe un paquete con el id ${id}`
+                });
+            }
+            break;
+        case 'promotions':
+            model = await Promotion.findById(id);
+            if (!model){
+                return  res.status(400).json({
+                    msg: `No existe una promocion con el id ${id}`
                 });
             }
             break;
@@ -119,7 +130,7 @@ const imageShow = async (req= request, res= response) => {
             model = await Image.findById(id);
             if (!model){
                 return  res.status(400).json({
-                    msg: `No existe una compañia con el id ${id}`
+                    msg: `No existe una imagen con el id ${id}`
                 });
             }
             break;
@@ -127,7 +138,15 @@ const imageShow = async (req= request, res= response) => {
             model = await Package.findById(id);
             if (!model){
                 return  res.status(400).json({
-                    msg: `No existe una categoria con el id ${id}`
+                    msg: `No existe un paquete con el id ${id}`
+                });
+            }
+            break;
+        case 'promotions':
+            model = await Promotion.findById(id);
+            if (!model){
+                return  res.status(400).json({
+                    msg: `No existe una promocion con el id ${id}`
                 });
             }
             break;
@@ -165,7 +184,7 @@ const imageShowGallery = async (req= request, res= response) => {
             model = await Image.findById(id);
             if (!model){
                 return  res.status(400).json({
-                    msg: `No existe una noticia con el id ${id}`
+                    msg: `No existe una imagen con el id ${id}`
                 });
             }
             break;
@@ -173,7 +192,15 @@ const imageShowGallery = async (req= request, res= response) => {
             model = await Package.findById(id);
             if (!model){
                 return  res.status(400).json({
-                    msg: `No existe una categoria con el id ${id}`
+                    msg: `No existe un paquete con el id ${id}`
+                });
+            }
+            break;
+        case 'promotions':
+            model = await Promotion.findById(id);
+            if (!model){
+                return  res.status(400).json({
+                    msg: `No existe una promocion con el id ${id}`
                 });
             }
             break;
@@ -211,7 +238,7 @@ const deletedFile = async (req= request, res=response) =>{
             model = await Image.findById(id);
             if (!model){
                 return  res.status(400).json({
-                    msg: `No existe una noticia con el id ${id}`
+                    msg: `No existe una imagen con el id ${id}`
                 });
             }
             break;
@@ -219,7 +246,15 @@ const deletedFile = async (req= request, res=response) =>{
             model = await Package.findById(id);
             if (!model){
                 return  res.status(400).json({
-                    msg: `No existe una caetgoria con el id ${id}`
+                    msg: `No existe un paquete con el id ${id}`
+                });
+            }
+            break;
+        case 'promotions':
+            model = await Promotion.findById(id);
+            if (!model){
+                return  res.status(400).json({
+                    msg: `No existe una promocion con el id ${id}`
                 });
             }
             break;
@@ -268,7 +303,7 @@ const deletedImageGallery = async (req= request, res=response) =>{
             model = await Image.findById(id);
             if (!model){
                 return  res.status(400).json({
-                    msg: `No existe una noticia con el id ${id}`
+                    msg: `No existe una imagen con el id ${id}`
                 });
             }
             break;
@@ -276,7 +311,15 @@ const deletedImageGallery = async (req= request, res=response) =>{
             model = await Package.findById(id);
             if (!model){
                 return  res.status(400).json({
-                    msg: `No existe una caetgoria con el id ${id}`
+                    msg: `No existe un paquete con el id ${id}`
+                });
+            }
+            break;
+        case 'promotions':
+            model = await Package.findById(id);
+            if (!model){
+                return  res.status(400).json({
+                    msg: `No existe una promocion con el id ${id}`
                 });
             }
             break;

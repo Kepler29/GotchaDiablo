@@ -1,8 +1,8 @@
 export const environment = {
   production: false,
   appVersion: 'v3.0.1',
-  USERDATA_KEY: 'authb04l10b25',
-  apiUrl: 'https://backend.gotchadiablo.com/api',
+  USERDATA_KEY: 'authb12l10n25',
+  apiUrl: 'http://localhost:8080/api',
   adminUrl: 'http://localhost:4200/',
   pageUrl: 'http://localhost:4200/',
 };

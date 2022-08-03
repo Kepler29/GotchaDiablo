@@ -17,6 +17,12 @@ const UserSchema =  Schema({
     image: {
         type: String,
     },
+    phone: {
+        type: String,
+    },
+    country: {
+        type: String,
+    },
     role: {
         type: String,
     },

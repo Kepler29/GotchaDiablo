@@ -1,4 +1,7 @@
-import { Component, HostListener,OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { Observable } from "rxjs";
+import { UserType } from "../../../pages/auth";
+import { AuthService } from "../../../pages/auth/services/auth.service";
 
 @Component({
   selector: 'app-header',
@@ -15,11 +18,11 @@ export class HeaderComponent implements OnInit {
       this.displayMenu = true;
     }
   };
-
+  user$: Observable<UserType> | undefined;
   open:boolean=false;
   displayMenu:boolean=false;
 
-  constructor() { }
+  constructor(private auth: AuthService) { }
 
   ngOnInit(): void {
     if (window.innerWidth < 992) {
@@ -27,6 +30,8 @@ export class HeaderComponent implements OnInit {
     } else if(window.innerWidth > 992) {
       this.displayMenu = true;
     }
+    // @ts-ignore
+    this.user$ = this.auth.currentUserSubject.asObservable();
   }
 
   openMenu(){
@@ -35,6 +40,11 @@ export class HeaderComponent implements OnInit {
     } else {
       this.open = true;
     }
+  }
+
+  logout() {
+    this.auth.logout();
+    document.location.reload();
   }
 
 }

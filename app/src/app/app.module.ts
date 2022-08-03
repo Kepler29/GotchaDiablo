@@ -1,4 +1,4 @@
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, LOCALE_ID, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
@@ -18,6 +18,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 // #fake-start#
 import { FakeAPIService } from './_fake/fake-api.service';
 // #fake-end#
+import { registerLocaleData } from '@angular/common';
 
 function appInitializer(authService: AuthService) {
   return () => {
@@ -26,6 +27,9 @@ function appInitializer(authService: AuthService) {
     });
   };
 }
+
+import { locale as enLang } from './modules/i18n/vocabs/es';
+registerLocaleData(enLang, 'es');
 
 @NgModule({
   declarations: [AppComponent],

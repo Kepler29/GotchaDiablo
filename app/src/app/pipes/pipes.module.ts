@@ -6,10 +6,10 @@ import { ImagePipe } from './image.pipe';
 
 @NgModule({
   declarations: [
-    ImagePipe,
+      ImagePipe
   ],
   exports: [
-    ImagePipe,
+      ImagePipe
   ],
   imports: [
     CommonModule
