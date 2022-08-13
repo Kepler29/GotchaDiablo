@@ -21,7 +21,6 @@ export class GalleryComponent implements OnInit {
 
   getPackages(){
     this.serviceGallery.getGallery().subscribe(response => {
-      console.log(response);
       this.images = response.images;
     }, error => {
       console.log(error);

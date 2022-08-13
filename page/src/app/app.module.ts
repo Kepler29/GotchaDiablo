@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, NgModule} from '@angular/core';
+import { LOCALE_ID, APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -8,6 +8,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { CaptchaModule } from 'primeng/captcha';
 import { AuthService } from './pages/auth/services/auth.service';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
+registerLocaleData(localeEs, 'es');
 
 function appInitializer(authService: AuthService) {
   return () => {
@@ -37,6 +41,10 @@ function appInitializer(authService: AuthService) {
       multi: true,
       deps: [AuthService],
     },
+    {
+      provide: LOCALE_ID,
+      useValue: 'es'
+    }
   ],
   bootstrap: [AppComponent]
 })

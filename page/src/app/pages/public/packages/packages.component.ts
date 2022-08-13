@@ -21,7 +21,6 @@ export class PackagesComponent implements OnInit {
 
   getPackages(){
     this.servicePackages.getPackages().subscribe(response => {
-      console.log(response);
       this.packages = response.packages;
     }, error => {
       console.log(error);

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import {Observable, Subscription} from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { AuthService, UserType } from "../auth/services/auth.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {  FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-account',
@@ -20,7 +20,8 @@ export class AccountComponent implements OnInit {
   percentage: number = 50;
   private unsubscribe: Subscription[] = [];
 
-  constructor(private fb: FormBuilder,private auth: AuthService,
+  constructor(private fb: FormBuilder,
+              private auth: AuthService,
               private cdr: ChangeDetectorRef) {
     // @ts-ignore
     this.user$ = this.auth.currentUserSubject.asObservable();

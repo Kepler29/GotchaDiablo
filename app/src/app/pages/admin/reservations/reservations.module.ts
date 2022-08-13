@@ -16,7 +16,7 @@ import { InputTextareaModule } from "primeng/inputtextarea";
 import { DialogModule } from "primeng/dialog";
 import { RippleModule } from "primeng/ripple";
 import { SweetAlert2Module } from "@sweetalert2/ngx-sweetalert2";
-import {CalendarModule} from "primeng/calendar";
+import { CalendarModule } from "primeng/calendar";
 
 
 @NgModule({

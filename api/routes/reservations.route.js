@@ -6,9 +6,10 @@ const { reservationsGet, reservationGetPublic, reservationsGetPublic, reservatio
 
 const router = Router();
 
-router.get('/', [
-    validateJWT
-] , reservationsGet);
+router.get('/:user', [
+    validateJWT,
+    validateFields
+], reservationsGet);
 
 router.get('/public', [
     validateJWT
@@ -17,7 +18,7 @@ router.get('/public', [
 router.get('/public/:slug', [
     validateJWT,
     validateFields
-] , reservationGetPublic);
+], reservationGetPublic);
 
 router.post('/', [
     validateJWT,

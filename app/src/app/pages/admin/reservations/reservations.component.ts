@@ -161,7 +161,6 @@ export class ReservationsComponent implements OnInit {
     this.reservationDialog = true;
     this.create=false;
     this.pError=false;
-    console.log(this.user);
   }
 
   hideDialog() {
