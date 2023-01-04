@@ -1,5 +1,5 @@
-// docker build -t gotchaSite .
-// docker run -p 4110:4110 gotchaSite
+// docker build -t gotchasite .
+// docker run -d --name gotchasite -p 4110:4110 gotchasite
 pipeline {
     agent any
     triggers {
@@ -18,6 +18,8 @@ pipeline {
                         ln -s /etc/nginx/sites-available/gotchadiablo.com /etc/nginx/sites-enabled/gotchadiablo.com
                     fi
                     cd /var/lib/jenkins/workspace/GotchaDiablo_master/page
+                    npm install
+                    npm run build:ssr
                 '''
             }
         }
@@ -33,6 +35,8 @@ pipeline {
                         ln -s /etc/nginx/sites-available/admin.gotchadiablo.com /etc/nginx/sites-enabled/admin.gotchadiablo.com
                     fi
                     cd /var/lib/jenkins/workspace/GotchaDiablo_master/app
+                    npm install --legacy-peer-deps
+                    ng build
                 '''
             }
         }
@@ -48,6 +52,8 @@ pipeline {
                         ln -s /etc/nginx/sites-available/backend.gotchadiablo.com /etc/nginx/sites-enabled/backend.gotchadiablo.com
                     fi
                     cd /var/lib/jenkins/workspace/GotchaDiablo_master/api
+                    npm install
+                    pm2 restart app.js --name backGD --watch
                 '''
             }
         }
