@@ -1,25 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [
-  {
-    path: '',
-    loadChildren: () => import('./pages/public/public.module').then(m => m.PublicModule)
-  },
-  {
-    path: 'auth',
-    loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
-  },
-  {
-    path: 'error',
-    loadChildren: () =>
-      import('./pages/errors/errors.module').then((m) => m.ErrorsModule),
-  },
-  {
-    path: '**',
-    redirectTo: 'error/404',
-  },
-];
+const routes: Routes = [];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, {

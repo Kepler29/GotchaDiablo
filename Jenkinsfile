@@ -1,3 +1,5 @@
+// docker build -t gotchaSite .
+// docker run -p 4110:4110 gotchaSite
 pipeline {
     agent any
     triggers {
@@ -19,8 +21,6 @@ pipeline {
                     npm install --legacy-peer-deps
                     npm audit fix --force
                     npm run build:ssr
-                    docker build -t gotchaSite .
-                    docker run -p 4110:4110 gotchaSite
                 '''
             }
         }
