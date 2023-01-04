@@ -20,8 +20,6 @@ pipeline {
                     cd /var/lib/jenkins/workspace/GotchaDiablo_master/page
                     npm install
                     npm run build:ssr
-                    cd dist/page/server
-                    pm2 restart main.js --name siteGD --watch
                 '''
             }
         }
