@@ -16,7 +16,7 @@ pipeline {
                         ln -s /etc/nginx/sites-available/gotchadiablo.com /etc/nginx/sites-enabled/gotchadiablo.com
                     fi
                     cd /var/lib/jenkins/workspace/GotchaDiablo_master/page
-                    npm install
+                    npm install --legacy-peer-deps
                     npm audit fix
                     npm run build:ssr
                     cd dist/page/server
