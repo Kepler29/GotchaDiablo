@@ -20,7 +20,7 @@ pipeline {
                     cd /var/lib/jenkins/workspace/GotchaDiablo_master/page
                     npm install
                     npm run build:ssr
-                    cd dist/page/sever
+                    cd dist/page/server
                     pm2 start main.js --name siteGD --watch
                 '''
             }
@@ -55,7 +55,7 @@ pipeline {
                     fi
                     cd /var/lib/jenkins/workspace/GotchaDiablo_master/api
                     npm install
-                    pm2 start app.js --name backGD --watch
+                    pm2 restart app.js --name backGD --watch
                 '''
             }
         }
