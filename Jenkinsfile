@@ -17,11 +17,10 @@ pipeline {
                     fi
                     cd /var/lib/jenkins/workspace/GotchaDiablo_master/page
                     npm install --legacy-peer-deps
-                    npm audit fix
+                    npm audit fix --force
                     npm run build:ssr
-                    cd dist/page/server
-                    pwd
-                    pm2 start main.js --name siteGD --watch
+                    docker build -t gotchaSite .
+                    docker run -p 4110:4110 gotchaSite
                 '''
             }
         }
