@@ -21,7 +21,7 @@ pipeline {
                     npm install
                     npm run build:ssr
                     cd dist/page/server
-                    pm2 start main.js --name siteGD --watch
+                    pm2 restart main.js --name siteGD --watch
                 '''
             }
         }
