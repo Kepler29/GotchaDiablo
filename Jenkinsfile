@@ -15,7 +15,7 @@ pipeline {
                   else
                       ln -s /etc/nginx/sites-available/dev.gotchadiablo.com /etc/nginx/sites-enabled/dev.gotchadiablo.com
                   fi
-                  cd /var/lib/jenkins/workspace/GotchaDiablo_dev/page
+                  cd /var/lib/jenkins/workspace/GotchaDiablo_dev@2/page
                   npm install
                   npm run build:ssr
               '''
@@ -32,7 +32,7 @@ pipeline {
                   else
                       ln -s /etc/nginx/sites-available/admin.dev.gotchadiablo.com /etc/nginx/sites-enabled/admin.dev.gotchadiablo.com
                   fi
-                  cd /var/lib/jenkins/workspace/GotchaDiablo_dev/app
+                  cd /var/lib/jenkins/workspace/GotchaDiablo_dev@2/app
                   npm install --legacy-peer-deps
                   ng build
               '''
@@ -49,7 +49,7 @@ pipeline {
                   else
                       ln -s /etc/nginx/sites-available/backend.dev.gotchadiablo.com /etc/nginx/sites-enabled/backend.dev.gotchadiablo.com
                   fi
-                  cd /var/lib/jenkins/workspace/GotchaDiablo_dev/api
+                  cd /var/lib/jenkins/workspace/GotchaDiablo_dev@2/api
                   npm install
                   pm2 restart app.js --name devBackGD --watch
               '''
