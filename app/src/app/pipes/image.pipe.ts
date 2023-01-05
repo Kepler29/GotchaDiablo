@@ -9,7 +9,7 @@ const URL = environment.apiUrl + '/uploads';
 export class ImagePipe implements PipeTransform {
 
   transform(id: string, collection:string): string {
-    return `${ URL }/${ collection }/${ id }`;
+    return `${ URL }/${ collection }/${ id }?random=${ Math.random() }`;
   }
 
 }
