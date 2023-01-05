@@ -9,7 +9,7 @@ export const environment = {
   isMockEnabled: false,
   apiUrl: 'http://backend.dev.gotchadiablo.com/api',
   adminUrl: 'http://admin.dev.gotchadiablo.com/',
-  pageUrl: 'https://gotchadiablo.com/',
+  pageUrl: 'https://dev.gotchadiablo.com/',
   appThemeName: 'Metronic',
   appPurchaseUrl: 'https://1.envato.market/EA4JP',
   appHTMLIntegration: 'https://preview.keenthemes.com/metronic8/demo1/documentation/base/helpers/flex-layouts.html',

@@ -1,3 +1,5 @@
+.DS_Store
+
 .idea
 
 /api/.idea
@@ -6,3 +8,7 @@
 
 /app/.idea
 /app/node_modules
+
+
+/page/.idea
+/page/node_modules
