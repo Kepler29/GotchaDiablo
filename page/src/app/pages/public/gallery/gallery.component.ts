@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { GalleryService } from 'src/app/services/public/gallery.service';
 import { Image } from "../../../interfaces/image";
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-gallery',
   templateUrl: './gallery.component.html',
-  styleUrls: ['./gallery.component.sass']
+  styleUrls: ['./gallery.component.sass'],
+  providers: [MessageService]
 })
 export class GalleryComponent implements OnInit {
 
   images:Image[]=[];
 
 
-  constructor(private serviceGallery: GalleryService) { }
+  constructor(private serviceGallery: GalleryService,
+              private messageService: MessageService) { }
 
   ngOnInit() {
     this.getPackages();
@@ -24,13 +26,11 @@ export class GalleryComponent implements OnInit {
       this.images = response.images;
     }, error => {
       console.log(error);
-      Swal.fire({
-        icon: 'error',
-        title: '¡Error!',
-        text: error.error.msg,
-        timer: 2000
-      });
+      this.showError();
     });
   }
 
+  showError() {
+    this.messageService.add({severity:'error', summary: 'Error', detail: 'No se pudo descargar el contenido'});
+  }
 }

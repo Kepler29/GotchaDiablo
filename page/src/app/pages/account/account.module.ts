@@ -14,6 +14,7 @@ import { NotificationsComponent } from './settings/forms/notifications/notificat
 import { SignInMethodComponent } from './settings/forms/sign-in-method/sign-in-method.component';
 import { PipesModule } from "../../pipes/pipes.module";
 import { ReactiveFormsModule } from "@angular/forms";
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ReactiveFormsModule } from "@angular/forms";
     AccountRoutingModule,
     ReactiveFormsModule,
     InlineSVGModule,
-    PipesModule
+    PipesModule,
+    ToastModule
   ],
 })
 export class AccountModule {}

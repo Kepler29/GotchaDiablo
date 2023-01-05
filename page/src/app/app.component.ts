@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
+  styleUrls: ['./app.component.sass'],
+  providers: [MessageService]
 })
 export class AppComponent implements OnInit {
   
   title = 'Gotcha Diablo';
 
-  constructor(private primengConfig: PrimeNGConfig){}
+  constructor(private primengConfig: PrimeNGConfig,
+              private messageService: MessageService){}
 
   ngOnInit() {
     this.primengConfig.ripple = true;
@@ -61,5 +64,13 @@ export class AppComponent implements OnInit {
       emptyMessage: 'No se Encontraron Resultados',
       emptyFilterMessage: 'No se Encontraron Resultados'
     });
+  }
+
+  onConfirm() {
+    this.messageService.clear('c');
+  }
+
+  onReject() {
+      this.messageService.clear('c');
   }
 }

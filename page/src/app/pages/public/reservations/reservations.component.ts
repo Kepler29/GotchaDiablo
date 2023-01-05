@@ -4,12 +4,13 @@ import { AuthService, UserType } from "../../auth";
 import { UntypedFormBuilder, UntypedFormGroup, NgForm } from "@angular/forms";
 import { ReservationsService } from "../../../services/public/reservations.service";
 import { Reservation } from "../../../interfaces/reservation";
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-reservations',
   templateUrl: './reservations.component.html',
-  styleUrls: ['./reservations.component.sass']
+  styleUrls: ['./reservations.component.sass'],
+  providers: [MessageService]
 })
 export class ReservationsComponent implements OnInit {
 
@@ -27,7 +28,8 @@ export class ReservationsComponent implements OnInit {
   constructor(private fb: UntypedFormBuilder,
               private auth: AuthService,
               private service: ReservationsService,
-              private cdr: ChangeDetectorRef) {
+              private cdr: ChangeDetectorRef,
+              private messageService: MessageService) {
     this.user$ = this.auth.currentUserSubject.asObservable();
     this.user$.subscribe( user => {
       // @ts-ignore
@@ -57,26 +59,24 @@ export class ReservationsComponent implements OnInit {
     this.service.postReservation(params).subscribe( response => {
       this.reservations.push(response.reservation);
       this.isLoading$.next(false);
-      Swal.fire({
-        icon: 'success',
-        title: '¡Exito!',
-        text: 'La reservación se creó con exíto.',
-        timer: 2000
-      });
+      this.showSuccess();
       this.cdr.detectChanges();
       this.reservationDialog = false;
     }, error => {
       console.log(error);
       this.isLoading$.next(false);
-      Swal.fire({
-        icon: 'error',
-        title: '¡Error!',
-        text: error.error.msg,
-        timer: 2000
-      });
+      this.showError(error.error.msg);
       this.cdr.detectChanges();
       this.reservationDialog = false;
     });
+  }
+
+  showSuccess() {
+    this.messageService.add({severity:'success', summary: '¡Exito!', detail: 'La reservación se creó con exíto.'});
+  }
+  
+  showError(detail:string) {
+    this.messageService.add({severity:'error', summary: 'Error', detail});
   }
 
   created(){

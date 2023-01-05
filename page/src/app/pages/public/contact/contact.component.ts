@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from "@angular/platform-browser";
 import { EmailsService } from "../../../services/public/emails.service";
 import { NgForm } from "@angular/forms";
-import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { MessageService } from "primeng/api";
 
 @Component({
@@ -27,12 +26,7 @@ export class ContactComponent implements OnInit {
 
   submit(form: NgForm){
     if(!this.recaptcha){
-      Swal.fire({
-        icon: 'error',
-        title: '¡Error!',
-        text: 'Debe comprobar que no es robot',
-        timer: 2000
-      });
+      this.showErrorCaptcha();
     } else {
       this.isLoading = true;
       console.log(form.value);
@@ -45,21 +39,11 @@ export class ContactComponent implements OnInit {
       console.log(params);
       this.service.sendContact(params).subscribe(response => {
         console.log(response);
-        Swal.fire({
-          icon: 'success',
-          title: '¡Exito!',
-          text: 'El Mensaje se envio con exito',
-          timer: 2000
-        });
+        this.showSuccess();
         this.isLoading = false;
       }, error => {
         console.log(error);
-        Swal.fire({
-          icon: 'error',
-          title: '¡Error!',
-          text: 'Se encontro un error al enviar el mensaje',
-          timer: 2000
-        });
+        this.showError();
         this.isLoading = false;
       });
     }
@@ -72,8 +56,16 @@ export class ContactComponent implements OnInit {
     return true;
   }
 
-  showResponse(event: any) {
-    this.messageService.add({severity:'info', summary:'Succees', detail: 'User Responded', sticky: true});
+  showSuccess() {
+    this.messageService.add({severity:'success', summary: 'Success', detail: 'El mensaje se envio con exito'});
+  }
+
+  showError() {
+    this.messageService.add({severity:'error', summary: 'Error', detail: 'No se enviar el mensaje, intentelo mas tarde'});
+  }
+
+  showErrorCaptcha() {
+    this.messageService.add({severity:'error', summary: 'Error', detail: 'Debe selecionar el recaptcha'});
   }
 
   resolved(captchaResponse: string) {

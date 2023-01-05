@@ -11,6 +11,7 @@ import { RippleModule } from "primeng/ripple";
 import { DialogModule } from "primeng/dialog";
 import { InputTextModule } from "primeng/inputtext";
 import { CalendarModule } from "primeng/calendar";
+import { ToastModule } from 'primeng/toast';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { CalendarModule } from "primeng/calendar";
     DialogModule,
     InputTextModule,
     FormsModule,
+    ToastModule,
     CalendarModule
   ]
 })

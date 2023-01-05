@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Package } from "../../../interfaces/package";
-import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { Image } from "../../../interfaces/image";
 import { PackagesService } from "../../../services/public/packages.service";
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.sass']
+  styleUrls: ['./main.component.sass'],
+  providers: [MessageService]
 })
 export class MainComponent implements OnInit {
 
@@ -15,7 +16,8 @@ export class MainComponent implements OnInit {
   packages:Package[]=[];
 
 
-  constructor(private serivcePackages: PackagesService) { }
+  constructor(private serivcePackages: PackagesService,
+              private messageService: MessageService) { }
 
   ngOnInit() {
     this.getPackages();
@@ -26,13 +28,12 @@ export class MainComponent implements OnInit {
       this.packages = response.packages;
     }, error => {
       console.log(error);
-      Swal.fire({
-        icon: 'error',
-        title: '¡Error!',
-        text: error.error.msg,
-        timer: 2000
-      });
+      this.showError();
     });
+  }
+
+  showError() {
+    this.messageService.add({severity:'error', summary: 'Error', detail: 'No se pudo cargar el contenido de los paquetes'});
   }
 
 }

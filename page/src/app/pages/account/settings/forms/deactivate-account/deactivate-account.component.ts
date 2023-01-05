@@ -3,13 +3,14 @@ import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { AuthService, UserType } from "../../../../auth/services/auth.service";
 import { UserService } from "../../../../../services/users/user.service";
 import { first } from "rxjs/operators";
-import Swal from 'sweetalert2/dist/sweetalert2.js';
 import {UserModel} from "../../../../auth";
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-deactivate-account',
   templateUrl: './deactivate-account.component.html',
+  providers: [MessageService]
 })
 export class DeactivateAccountComponent implements OnInit {
 
@@ -28,6 +29,7 @@ export class DeactivateAccountComponent implements OnInit {
   constructor(private auth: AuthService,
               private fb: UntypedFormBuilder,
               private service: UserService,
+              private messageService: MessageService,
               private cdr: ChangeDetectorRef) {
     // @ts-ignore
     this.user$ = this.auth.currentUserSubject.asObservable();
@@ -60,44 +62,44 @@ export class DeactivateAccountComponent implements OnInit {
   }
 
   saveSettings() {
-    Swal.fire({
-      title: '¿Esta seguro que decea eliminar la cuenta?',
-      text: '¡Esta apunto de eliminar la cuenta!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Si',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        this.isLoading$.next(true);
-        this.hasError = false;
-        const deactivateSubscr = this.service
-          .deactivateAccount(this.id)
-          .pipe(first())
-          .subscribe(user => {
-            if (user) {
-              this.isLoading$.next(false);
-              Swal.fire({
-                icon: 'success',
-                title: '¡Exito!',
-                text: 'La información se actualizo con éxito.',
-                timer: 2000
-              });
-              this.cdr.detectChanges();
-            } else {
-              this.hasError = true;
-              this.isLoading$.next(false);
-            }
-          });
-        this.unsubscribe.push(deactivateSubscr);
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Cancelado',
-          'No se elimino la cuenta',
-          'error'
-        )
-      }
-    });
+    this.showConfirm();
+  }
+
+  showConfirm() {
+    this.messageService.clear();
+    this.messageService.add({key: 'c', sticky: true, severity:'warn', summary:'Are you sure?', detail:'Confirm to proceed'});
+  }
+
+  onConfirm() {
+    this.messageService.clear('c');
+    this.isLoading$.next(true);
+    this.hasError = false;
+    const deactivateSubscr = this.service
+      .deactivateAccount(this.id)
+      .pipe(first())
+      .subscribe(user => {
+        if (user) {
+          this.isLoading$.next(false);
+          this.showSuccess();
+          this.cdr.detectChanges();
+        } else {
+          this.hasError = true;
+          this.isLoading$.next(false);
+        }
+      });
+    this.unsubscribe.push(deactivateSubscr);
+  }
+
+  onReject() {
+      this.messageService.clear('c');
+      this.showError();
+  }
+  showSuccess() {
+    this.messageService.add({severity:'success', summary: 'Success', detail: 'La información se actualizo con éxito.'});
+  }
+
+  showError() {
+    this.messageService.add({severity:'error', summary: 'Cancelado', detail: 'No se elimino la cuenta'});
   }
 
   ngOnDestroy() {

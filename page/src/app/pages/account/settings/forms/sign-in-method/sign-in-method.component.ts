@@ -6,11 +6,12 @@ import { UserModel } from "../../../../auth";
 import { first } from "rxjs/operators";
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { UserService } from "../../../../../services/users/user.service";
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-sign-in-method',
   templateUrl: './sign-in-method.component.html',
+  providers: [MessageService]
 })
 export class SignInMethodComponent implements OnInit, OnDestroy {
 
@@ -40,6 +41,7 @@ export class SignInMethodComponent implements OnInit, OnDestroy {
               private fb: UntypedFormBuilder,
               private fbp: UntypedFormBuilder,
               private service: UserService,
+              private messageService: MessageService,
               private cdr: ChangeDetectorRef) {
     // @ts-ignore
     this.user$ = this.auth.currentUserSubject.asObservable();
@@ -139,12 +141,7 @@ export class SignInMethodComponent implements OnInit, OnDestroy {
       .subscribe(user => {
         if (user) {
           this.isLoading$.next(false);
-          Swal.fire({
-            icon: 'success',
-            title: '¡Exito!',
-            text: 'La información se actualizo con éxito.',
-            timer: 2000
-          });
+          this.showSuccess();
           this.cdr.detectChanges();
         } else {
           this.isLoading$.next(false);
@@ -153,12 +150,7 @@ export class SignInMethodComponent implements OnInit, OnDestroy {
       }, error => {
         console.log(error);
         this.isLoading$.next(false);
-        Swal.fire({
-          icon: 'error',
-          title: '¡Error!',
-          text: error.error.errors[0].msg,
-          timer: 2000
-        });
+        this.showError(error.error.errors[0].msg);
         this.cdr.detectChanges();
       });
     this.unsubscribe.push(emailSubscr);
@@ -186,12 +178,7 @@ export class SignInMethodComponent implements OnInit, OnDestroy {
       .subscribe(user => {
         if (user) {
           this.isLoading$.next(false);
-          Swal.fire({
-            icon: 'success',
-            title: '¡Exito!',
-            text: 'La información se actualizo con éxito.',
-            timer: 2000
-          });
+          this.showSuccess();
           this.cdr.detectChanges();
         } else {
           this.isLoading$.next(false);
@@ -200,23 +187,21 @@ export class SignInMethodComponent implements OnInit, OnDestroy {
       }, error => {
         this.isLoading$.next(false);
         if (error.error.errors) {
-          Swal.fire({
-            icon: 'error',
-            title: '¡Error!',
-            text: error.error.errors[0].msg,
-            timer: 2000
-          });
+          this.showError(error.error.errors[0].msg);
         } else {
-          Swal.fire({
-            icon: 'error',
-            title: '¡Error!',
-            text: error.error.msg,
-            timer: 2000
-          });
+          this.showError(error.error.msg);
         }
         this.cdr.detectChanges();
       });
     this.unsubscribe.push(passwordSubscr);
+  }
+
+  showSuccess() {
+    this.messageService.add({severity:'success', summary: 'Success', detail: 'La información se actualizo con éxito.'});
+  }
+
+  showError(detail:string) {
+    this.messageService.add({severity:'error', summary: 'Error', detail});
   }
 
   ngOnDestroy() {

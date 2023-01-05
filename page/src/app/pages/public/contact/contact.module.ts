@@ -6,9 +6,10 @@ import { ContactComponent } from './contact.component';
 import { CaptchaModule } from "primeng/captcha";
 import { FormsModule } from "@angular/forms";
 import { RecaptchaModule } from "ng-recaptcha";
-import {InputTextModule} from "primeng/inputtext";
-import {InputTextareaModule} from "primeng/inputtextarea";
-import {InputNumberModule} from "primeng/inputnumber";
+import { InputTextModule } from "primeng/inputtext";
+import { InputTextareaModule } from "primeng/inputtextarea";
+import { InputNumberModule } from "primeng/inputnumber";
+import { ToastModule } from 'primeng/toast';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import {InputNumberModule} from "primeng/inputnumber";
     RecaptchaModule,
     InputTextModule,
     InputTextareaModule,
-    InputNumberModule
+    InputNumberModule,
+    ToastModule
   ]
 })
 export class ContactModule { }

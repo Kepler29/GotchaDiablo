@@ -5,11 +5,12 @@ import { UntypedFormBuilder, UntypedFormGroup, NgForm, Validators } from "@angul
 import { UserService } from "../../../../../services/users/user.service";
 import { first } from "rxjs/operators";
 import { UserModel } from "../../../../auth";
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-profile-details',
   templateUrl: './profile-details.component.html',
+  providers: [MessageService]
 })
 export class ProfileDetailsComponent implements OnInit {
 
@@ -33,6 +34,7 @@ export class ProfileDetailsComponent implements OnInit {
 
   constructor(private fb: UntypedFormBuilder,
               private auth: AuthService,
+              private messageService: MessageService,
               private service: UserService,
               private cdr: ChangeDetectorRef) {
     // @ts-ignore
@@ -106,19 +108,23 @@ export class ProfileDetailsComponent implements OnInit {
       .subscribe(user => {
         if (user) {
           this.isLoading$.next(false);
-          Swal.fire({
-            icon: 'success',
-            title: '¡Exito!',
-            text: 'La información se actualizo con éxito.',
-            timer: 2000
-          });
+          this.showSuccess();
           this.cdr.detectChanges();
         } else {
           this.hasError = true;
+          this.showError('Se encontro un error intentelo mas tarde');
           this.isLoading$.next(false);
         }
       });
     this.unsubscribe.push(detailsSubscr);
+  }
+
+  showSuccess() {
+    this.messageService.add({severity:'success', summary: 'Success', detail: 'La información se actualizo con éxito.'});
+  }
+
+  showError(detail:string) {
+    this.messageService.add({severity:'error', summary: 'Error', detail});
   }
 
   saveSettings(form: NgForm) {

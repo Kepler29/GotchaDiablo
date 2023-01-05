@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { Package } from 'src/app/interfaces/package';
 import { PackagesService } from 'src/app/services/public/packages.service';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-packages',
   templateUrl: './packages.component.html',
-  styleUrls: ['./packages.component.sass']
+  styleUrls: ['./packages.component.sass'],
+  providers: [MessageService]
 })
 export class PackagesComponent implements OnInit {
 
   packages:Package[]=[];
 
 
-  constructor(private servicePackages: PackagesService) { }
+  constructor(private servicePackages: PackagesService,
+              private messageService: MessageService) { }
 
   ngOnInit() {
     this.getPackages();
@@ -24,13 +26,12 @@ export class PackagesComponent implements OnInit {
       this.packages = response.packages;
     }, error => {
       console.log(error);
-      Swal.fire({
-        icon: 'error',
-        title: '¡Error!',
-        text: error.error.msg,
-        timer: 2000
-      });
+      this.showError();
     });
+  }
+
+  showError() {
+    this.messageService.add({severity:'error', summary: 'Error', detail: 'No se pudo descargar el contenido'});
   }
 
 }

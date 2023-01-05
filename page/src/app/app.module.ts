@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { CaptchaModule } from 'primeng/captcha';
 
 @NgModule({
@@ -17,7 +16,6 @@ import { CaptchaModule } from 'primeng/captcha';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    SweetAlert2Module.forRoot(),
     CaptchaModule
   ],
   providers: [],
