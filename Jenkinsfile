@@ -51,7 +51,7 @@ pipeline {
                   fi
                   cd /var/lib/jenkins/workspace/GotchaDiablo_dev@2/api
                   npm install
-                  pm2 start app.js --name devBackGD --watch
+                  pm2 restart app.js --name devBackGD --watch
               '''
           }
       }
