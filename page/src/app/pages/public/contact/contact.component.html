@@ -1,0 +1,72 @@
+<div class="container-lg py-2">
+  <h1 class="text-center my-4 title-contact">Contacto</h1>
+  <div class="row">
+    <div class="col-12 col-lg-8">
+      <form (ngSubmit)="submit(form)"  #form="ngForm">
+        <div class="p-fluid grid row">
+          <div class="field col-12 mt-5 pt-3">
+            <span class="p-float-label">
+              <input id="name" name="name" type="text" pInputText ngModel [required]="true">
+              <label for="name">Nombre</label>
+          </span>
+          </div>
+        </div>
+        <div class="p-fluid grid row">
+          <div class="field col-12 col-md-6 mt-5 pt-3">
+           <span class="p-float-label">
+              <input id="email" name="email" type="email" pInputText ngModel [required]="true">
+              <label for="email">Email</label>
+          </span>
+          </div>
+          <div class="field col-12 col-md-6 mt-5 pt-3">
+            <span class="p-float-label">
+              <input id="phone" type="number" min="1111111111" max="9999999999" name="phone" pInputText ngModel [required]="true">
+              <label for="phone">Telefono</label>
+            </span>
+          </div>
+        </div>
+        <div class="p-fluid grid row">
+          <div class="field col-12 mt-5 pt-3">
+            <span class="p-float-label">
+              <textarea id="message" rows="5" pInputTextarea name="message" ngModel [required]="true"></textarea>
+              <label for="message">Mensaje</label>
+          </span>
+          </div>
+        </div>
+        <div class="row my-5">
+          <div class="col-12">
+            <button type="submit"
+                    title="Enviar"
+                    class="btn btn-primary cursor-pointer float-end"
+                    [disabled]="btnValid(form.invalid)">
+              <span class="me-2">Enviar</span>
+              <ng-container *ngIf="!isLoading">
+                <i class="pi pi-telegram"></i>
+              </ng-container>
+              <ng-container *ngIf="isLoading">
+                <i class="pi pi-spin pi-spinner"></i>
+              </ng-container>
+            </button>
+          </div>
+        </div>
+        <div class="row my-3">
+          <div class="col-12">
+            <re-captcha
+              (resolved)="resolved($event)"
+              siteKey="6LcMMg4dAAAAAAj7ChPazViPJzo5wACX-pYNPY7k"
+              class="float-end"
+            ></re-captcha>
+            <p-captcha class="float-end" siteKey="6LcMMg4dAAAAAAj7ChPazViPJzo5wACX-pYNPY7k" (onResponse)="showResponse($event)"></p-captcha>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-12 col-lg-4">
+      <div class="container-fluid mt-2">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d941.7529748044429!2d-99.60565715772506!3d19.23831317672128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85cd8b8fb4b01c51%3A0xf18adf1c6157f1d8!2sGotcha%20Diablo!5e0!3m2!1ses-419!2smx!4v1595995836118!5m2!1ses-419!2smx" width="100%" height="650" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+
