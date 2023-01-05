@@ -6,17 +6,24 @@
               <h4>{{message.summary}}</h4>
               <p>{{message.detail}}</p>
           </div>
-          <div class="grid p-fluid">
+          <div class="row p-fluid">
               <div class="col-6">
-                  <button type="button" pButton (click)="onConfirm()" label="Yes" class="p-button-success"></button>
+                  <button id="kt_account_deactivate_account_submit" type="button"
+                          class="btn btn-info fw-bold" (click)="onConfirm()">
+                    Si
+                  </button>
               </div>
               <div class="col-6">
-                  <button type="button" pButton (click)="onReject()" label="No" class="p-button-secondary"></button>
+                <button id="kt_account_deactivate_account_submit" type="button"
+                        class="btn btn-info fw-bold" (click)="onReject()">
+                  No
+                </button>
               </div>
           </div>
       </div>
   </ng-template>
 </p-toast>
+<p-toast></p-toast>
 <div class="card">
   <div class="card-header border-0 cursor-pointer"
        role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_deactivate"

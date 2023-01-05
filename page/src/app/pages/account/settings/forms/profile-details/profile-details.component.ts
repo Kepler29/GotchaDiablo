@@ -106,6 +106,7 @@ export class ProfileDetailsComponent implements OnInit {
       .updateUser(updateUser)
       .pipe(first())
       .subscribe(user => {
+        console.log(user);
         if (user) {
           this.isLoading$.next(false);
           this.showSuccess();
@@ -115,12 +116,23 @@ export class ProfileDetailsComponent implements OnInit {
           this.showError('Se encontro un error intentelo mas tarde');
           this.isLoading$.next(false);
         }
+      }, error => {
+        console.log(error);
+        if(error.error.errors){
+          for(let i=0; error.error.errors.length>i; i++){
+            this.showError(error.error.errors[i].msg);
+          }
+        } else {
+          this.showError('Se encontro un error intentelo mas tarde');
+        }
+        this.hasError = true;
+        this.isLoading$.next(false);
       });
     this.unsubscribe.push(detailsSubscr);
   }
 
   showSuccess() {
-    this.messageService.add({severity:'success', summary: 'Success', detail: 'La información se actualizo con éxito.'});
+    this.messageService.add({severity:'success', summary: '¡Exito!', detail: 'La información se actualizo con éxito.'});
   }
 
   showError(detail:string) {

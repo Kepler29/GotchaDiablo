@@ -42,6 +42,21 @@ const reservationsGet = async (req, res = response) => {
     });
 };
 
+
+const reservationsGetUser = async (req, res = response) => {
+
+    
+    const [ total, reservations ] = await Promise.all([
+        Reservation.countDocuments({delete:false}),
+        Reservation.find({delete:false}).populate('user')
+    ]);
+
+    res.json({
+        total,
+        reservations
+    });
+};
+
 const reservationPost = async (req = request, res = response) => {
 
     let { user, date } = req.body;
@@ -110,6 +125,7 @@ module.exports = {
     reservationsGetPublic,
     reservationGetPublic,
     reservationsGet,
+    reservationsGetUser,
     reservationPost,
     reservationActive,
     reservationShow,

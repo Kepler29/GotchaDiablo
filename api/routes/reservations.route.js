@@ -2,14 +2,19 @@ const { Router} = require('express');
 const { check } = require('express-validator');
 const { validateFields, validateJWT } = require('../middlewares');
 const { existReservationForId, existReservationForSlug } = require("../helpers/db-validators");
-const { reservationsGet, reservationGetPublic, reservationsGetPublic, reservationPost, reservationPut, reservationShow, reservationActive, reservationDelete } = require("../controllers/reservations.controller");
+const { reservationsGet, reservationsGetUser, reservationGetPublic, reservationsGetPublic, reservationPost, reservationPut, reservationShow, reservationActive, reservationDelete } = require("../controllers/reservations.controller");
 
 const router = Router();
+
+router.get('/', [
+    validateJWT,
+    validateFields
+], reservationsGet);
 
 router.get('/:user', [
     validateJWT,
     validateFields
-], reservationsGet);
+], reservationsGetUser);
 
 router.get('/public', [
     validateJWT

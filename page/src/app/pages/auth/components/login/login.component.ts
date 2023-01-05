@@ -46,8 +46,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initForm();
     // get return url from route parameters or default to '/'
-    this.returnUrl =
-      this.route.snapshot.queryParams['returnUrl'.toString()] || '/';
+    console.log(this.route.snapshot.data);
+    this.returnUrl = this.route.snapshot.data['returnUrl'.toString()] || '/';
+    console.log(this.returnUrl);
   }
 
   // convenience getter for easy access to form fields
