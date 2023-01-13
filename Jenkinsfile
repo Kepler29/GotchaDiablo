@@ -10,12 +10,12 @@ pipeline {
             steps {
                 sh '''
                     #!/bin/bash
-                    cp site.conf /etc/nginx/sites-available/gotchadiablo.com.conf
-                    if [ -f /etc/nginx/sites-enabled/gotchadiablo.com.conf ];
+                    cp site.conf /etc/nginx/sites-available/gotchadiablo.com
+                    if [ -f /etc/nginx/sites-enabled/gotchadiablo.com ];
                     then
                         echo "ya esta el enlace"
                     else
-                        ln -s /etc/nginx/sites-available/gotchadiablo.com.conf /etc/nginx/sites-enabled/gotchadiablo.com.conf
+                        ln -s /etc/nginx/sites-available/gotchadiablo.com /etc/nginx/sites-enabled/gotchadiablo.com
                     fi
                     cd /var/lib/jenkins/workspace/GotchaDiablo_master/page
                     npm install
@@ -27,12 +27,12 @@ pipeline {
             steps {
                 sh '''
                     #!/bin/bash
-                    cp admin.conf /etc/nginx/sites-available/admin.gotchadiablo.com.conf
-                    if [ -f /etc/nginx/sites-enabled/admin.gotchadiablo.com.conf ];
+                    cp admin.conf /etc/nginx/sites-available/admin.gotchadiablo.com
+                    if [ -f /etc/nginx/sites-enabled/admin.gotchadiablo.com ];
                     then
                         echo "ya esta el enlace"
                     else
-                        ln -s /etc/nginx/sites-available/admin.gotchadiablo.com.conf /etc/nginx/sites-enabled/admin.gotchadiablo.com.conf
+                        ln -s /etc/nginx/sites-available/admin.gotchadiablo.com /etc/nginx/sites-enabled/admin.gotchadiablo.com
                     fi
                     cd /var/lib/jenkins/workspace/GotchaDiablo_master/app
                     npm install --legacy-peer-deps
