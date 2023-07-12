@@ -15,7 +15,7 @@ pipeline {
                   else
                       ln -s /etc/nginx/sites-available/dev.gotchadiablo.com /etc/nginx/sites-enabled/dev.gotchadiablo.com
                   fi
-                  cd /var/lib/jenkins/workspace/GotchaDiablo_dev/page
+                  cd /var/lib/jenkins/workspace/Gotcha_Diablo_dev/page
                   npm install
                   npm run build:ssr
                   docker build -t siteimagedevgd .
@@ -34,7 +34,7 @@ pipeline {
                   else
                       ln -s /etc/nginx/sites-available/admin.dev.gotchadiablo.com /etc/nginx/sites-enabled/admin.dev.gotchadiablo.com
                   fi
-                  cd /var/lib/jenkins/workspace/GotchaDiablo_dev/app
+                  cd /var/lib/jenkins/workspace/Gotcha_Diablo_dev/app
                   npm install --legacy-peer-deps
                   ng build
               '''
@@ -51,7 +51,7 @@ pipeline {
                   else
                       ln -s /etc/nginx/sites-available/backend.dev.gotchadiablo.com /etc/nginx/sites-enabled/backend.dev.gotchadiablo.com
                   fi
-                  cd /var/lib/jenkins/workspace/GotchaDiablo_dev/api
+                  cd /var/lib/jenkins/workspace/Gotcha_Diablo_dev/api
                   npm install
                   docker build -t backimagedevgd .
                   docker run -it -p 4011:4011 --name backdevgd -d backimagedevgd
