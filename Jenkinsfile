@@ -18,6 +18,8 @@ pipeline {
                   cd /var/lib/jenkins/workspace/GotchaDiablo_dev/page
                   npm install
                   npm run build:ssr
+                  docker build -t siteimagedevgd .
+                  docker run -it -p 4112:4112 --name sitedevgd -d siteimagedevgd
               '''
           }
       }
@@ -51,7 +53,8 @@ pipeline {
                   fi
                   cd /var/lib/jenkins/workspace/GotchaDiablo_dev/api
                   npm install
-                  pm2 start app.js --name devBackGD --watch
+                  docker build -t backimagedevgd .
+                  docker run -it -p 4118:4118 --name backdevgd -d backimagedevgd
               '''
           }
       }
