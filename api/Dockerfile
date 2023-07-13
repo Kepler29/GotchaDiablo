@@ -1,4 +1,4 @@
-FROM node:18-slim
+FROM node:14-slim
 
 ## Copy source code
 COPY . .
