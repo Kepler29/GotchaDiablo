@@ -20,6 +20,8 @@ pipeline {
                     cd /var/lib/jenkins/workspace/GotchaDiablo_master/page
                     npm install
                     npm run build:ssr
+                    docker build -t siteimagegd .
+                    docker run -it -p 4110:4110 --name sitegd -d siteimagegd
                 '''
             }
         }
@@ -53,7 +55,8 @@ pipeline {
                     fi
                     cd /var/lib/jenkins/workspace/GotchaDiablo_master/api
                     npm install
-                    pm2 start app.js --name backGD --watch
+                    docker build -t backimagegd .
+                    docker run -it -p 4111:1011 --name backgd -d backimagegd
                 '''
             }
         }
